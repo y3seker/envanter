@@ -1,0 +1,1456 @@
+{
+  "version": 1,
+  "totalQuestions": 137,
+  "sections": [
+    {
+      "id": "communication",
+      "title": "İletişim tarzı",
+      "subtitle": "Kendini nasıl ifade ediyorsun?",
+      "sheet": 2,
+      "evaluationSheet": 3,
+      "startRow": 16,
+      "count": 40,
+      "answerColumn": "B",
+      "evaluationColumn": "B",
+      "kind": "scale",
+      "max": 5,
+      "instruction": "Her ifadeyi kendi davranışlarını düşünerek 1–5 arasında puanla.",
+      "labels": [
+        "Hiçbir zaman",
+        "Nadiren",
+        "Bazen",
+        "Çoğunlukla",
+        "Her zaman"
+      ],
+      "sheetName": "İletişim Tarzı Envanteri",
+      "evaluationSheetName": "İletişim Tarzı Değerlendirme",
+      "questions": [
+        {
+          "id": "communication-1",
+          "number": 1,
+          "cell": "B16",
+          "evaluationCell": "B2",
+          "text": "Yardıma ihtiyacım olduğunda başkalarından yardım istemekten çekinmem."
+        },
+        {
+          "id": "communication-2",
+          "number": 2,
+          "cell": "B17",
+          "evaluationCell": "B3",
+          "text": "Öfke, gerginlik gibi bir duygu hissettiğimde anlaşılmaması için duygularımı kendime saklarım"
+        },
+        {
+          "id": "communication-3",
+          "number": 3,
+          "cell": "B18",
+          "evaluationCell": "B4",
+          "text": "Söylediklerim başkalarına ağır gelebilir, onların incineceğini bilsem bile net olmaktan yanayım."
+        },
+        {
+          "id": "communication-4",
+          "number": 4,
+          "cell": "B19",
+          "evaluationCell": "B5",
+          "text": "Bana bir haksızlık yapılmışsa,o an tepki göstermek yerine kafamda tartıp, düşünüp, tasarlayarak daha sonra bunun karşılığını vermeyi tercih ederim."
+        },
+        {
+          "id": "communication-5",
+          "number": 5,
+          "cell": "B20",
+          "evaluationCell": "B6",
+          "text": "İnsanlarla iletişim halindeyken, göz temasını rahatlıkla koruyabilirim."
+        },
+        {
+          "id": "communication-6",
+          "number": 6,
+          "cell": "B21",
+          "evaluationCell": "B7",
+          "text": "Başkalarının benimle iligli düşüncelerine bazen gereğinden fazla önem verip, onların beklentilerine göre davranmaya çalışırım."
+        },
+        {
+          "id": "communication-7",
+          "number": 7,
+          "cell": "B22",
+          "evaluationCell": "B8",
+          "text": "İstek ve ihtiyaçlarımdan başkalarını rahatsız edecek olsa bile vazgeçmem."
+        },
+        {
+          "id": "communication-8",
+          "number": 8,
+          "cell": "B23",
+          "evaluationCell": "B9",
+          "text": "Birşeyden memnun olmadığımda, hiçbir şey söylemem, ancak beden dilim memnuniyetsizliğimi dile getirir."
+        },
+        {
+          "id": "communication-9",
+          "number": 9,
+          "cell": "B24",
+          "evaluationCell": "B10",
+          "text": "İnsanlarla aynı görüşü paylaşmadığımda, bunu belirtirim."
+        },
+        {
+          "id": "communication-10",
+          "number": 10,
+          "cell": "B25",
+          "evaluationCell": "B11",
+          "text": "İnsanlar sözlerini yerine getirmediğinde, ne kadar kırıldığımı söylemek yerine susmayı tercih ederim."
+        },
+        {
+          "id": "communication-11",
+          "number": 11,
+          "cell": "B26",
+          "evaluationCell": "B12",
+          "text": "Eğer gerek duyarsam bazı kişilere karşı kaba ve zorlayıcı davranış göstermekten kaçınmam."
+        },
+        {
+          "id": "communication-12",
+          "number": 12,
+          "cell": "B27",
+          "evaluationCell": "B13",
+          "text": "Bazı olaylarda tepkimi net olarak göstermediğim halde o konuyu kafama takıp günlerce üzerine düşündüğüm olur."
+        },
+        {
+          "id": "communication-13",
+          "number": 13,
+          "cell": "B28",
+          "evaluationCell": "B14",
+          "text": "Bir kişiye kızdıysam, uygun anda bunu ifade ederim."
+        },
+        {
+          "id": "communication-14",
+          "number": 14,
+          "cell": "B29",
+          "evaluationCell": "B15",
+          "text": "Başkalarının beni övmesi beni utandırır."
+        },
+        {
+          "id": "communication-15",
+          "number": 15,
+          "cell": "B30",
+          "evaluationCell": "B16",
+          "text": "Önemli olduğunu düşündüğüm bir konuda söyleyeceğim birşey varsa, konuşmayı keserek, araya girmekten çekinmem."
+        },
+        {
+          "id": "communication-16",
+          "number": 16,
+          "cell": "B31",
+          "evaluationCell": "B17",
+          "text": "Birisi bana karşı bir hata yaptıysa, bazı durumlarda ona imalı laflar gönderdiğim; onu ima ederek örnekler verdiğim olur."
+        },
+        {
+          "id": "communication-17",
+          "number": 17,
+          "cell": "B32",
+          "evaluationCell": "B18",
+          "text": "Kendimi suçlu hissetmeden, insanlara “Hayır” diyebilirim"
+        },
+        {
+          "id": "communication-18",
+          "number": 18,
+          "cell": "B33",
+          "evaluationCell": "B19",
+          "text": "Çatışma ve huzursuzluk çıkmaması için taviz vermek uğruna bile olsa uzlaşmacı davranırım."
+        },
+        {
+          "id": "communication-19",
+          "number": 19,
+          "cell": "B34",
+          "evaluationCell": "B20",
+          "text": "İş ortamında başkalarının duygularını düşünerek hareket etmem, sonuçta buranın profesyonel bir ortam olduğunu herkesin bilmesini isterim."
+        },
+        {
+          "id": "communication-20",
+          "number": 20,
+          "cell": "B35",
+          "evaluationCell": "B21",
+          "text": "İnsanlara karşı direkt olarak aynı fikirde olmadığımı belirtmem ancak, memnuniyetsizliğimi anlamalarını sağlarım."
+        },
+        {
+          "id": "communication-21",
+          "number": 21,
+          "cell": "B36",
+          "evaluationCell": "B22",
+          "text": "Kendimi suçlu hissetmeden, kendim için birşey isteyebilir, başkalarına isteklerimi söyleyebilirim."
+        },
+        {
+          "id": "communication-22",
+          "number": 22,
+          "cell": "B37",
+          "evaluationCell": "B23",
+          "text": "İnsanlar benden birşey rica ettiğinde, ricalarını kırmamak uğruna bazen kendi planlarımı değiştiririm."
+        },
+        {
+          "id": "communication-23",
+          "number": 23,
+          "cell": "B38",
+          "evaluationCell": "B24",
+          "text": "İnsanların yaptığı hataları hemen fark ederim"
+        },
+        {
+          "id": "communication-24",
+          "number": 24,
+          "cell": "B39",
+          "evaluationCell": "B25",
+          "text": "İnsanlarla aynı fikirde olmadığımda, onlarla tartışmayıp uzlaşmacı göründüğüm, ama yine de kendi bildiğimi yaptığım durumlar olur."
+        },
+        {
+          "id": "communication-25",
+          "number": 25,
+          "cell": "B40",
+          "evaluationCell": "B26",
+          "text": "Duygularımı, dürüstçe, oğrudan ve net olarak ifade edebilirim."
+        },
+        {
+          "id": "communication-26",
+          "number": 26,
+          "cell": "B41",
+          "evaluationCell": "B27",
+          "text": "Benim için yeni bir ortama girdiğimde, rahatsız olma eğilimim vardır."
+        },
+        {
+          "id": "communication-27",
+          "number": 27,
+          "cell": "B42",
+          "evaluationCell": "B28",
+          "text": "Sözlerime vurgu katmak için, vücut hareketleri, jest ve mimikleri bolca kullanırım."
+        },
+        {
+          "id": "communication-28",
+          "number": 28,
+          "cell": "B43",
+          "evaluationCell": "B29",
+          "text": "Fikirlerimi ya da duygularımı doğrudan söylemeyip ima ettiğim zamanlar olur"
+        },
+        {
+          "id": "communication-29",
+          "number": 29,
+          "cell": "B44",
+          "evaluationCell": "B30",
+          "text": "Kendime tanıdığım hakları, karşımdaki kişiye de tanırım."
+        },
+        {
+          "id": "communication-30",
+          "number": 30,
+          "cell": "B45",
+          "evaluationCell": "B31",
+          "text": "Birilerine olumsuz bir şey söylemem ya da onların eksikliklerini göstermem gerektiğinde suçluluk hissederim."
+        },
+        {
+          "id": "communication-31",
+          "number": 31,
+          "cell": "B46",
+          "evaluationCell": "B32",
+          "text": "Her koşulda kontrolün bende olmasını isterim."
+        },
+        {
+          "id": "communication-32",
+          "number": 32,
+          "cell": "B47",
+          "evaluationCell": "B33",
+          "text": "Eğer bir kişiyi sevmezsem, bunu dolaylı yollardan anlamasını sağlarım."
+        },
+        {
+          "id": "communication-33",
+          "number": 33,
+          "cell": "B48",
+          "evaluationCell": "B34",
+          "text": "Hakkımı korumam gerektiğinde, bunu gerilmeden, bağırmadan yapabilirim"
+        },
+        {
+          "id": "communication-34",
+          "number": 34,
+          "cell": "B49",
+          "evaluationCell": "B35",
+          "text": "İletişim kurarken insanların gözlerine bakmak beni zorlar."
+        },
+        {
+          "id": "communication-35",
+          "number": 35,
+          "cell": "B50",
+          "evaluationCell": "B36",
+          "text": "Bazı kişiler beni o kadar çileden çıkarır ki şiddetli tepkiler verebilirim."
+        },
+        {
+          "id": "communication-36",
+          "number": 36,
+          "cell": "B51",
+          "evaluationCell": "B37",
+          "text": "Bir tartışmada haksız duruma düştüğümde çekip giderim."
+        },
+        {
+          "id": "communication-37",
+          "number": 37,
+          "cell": "B52",
+          "evaluationCell": "B38",
+          "text": "Uygun olmayan ya da hoşuma gitmeyen bir davranışa maruz kaldığımda bundan hoşlanmadığımı rahatlıkla ifade edebilirim."
+        },
+        {
+          "id": "communication-38",
+          "number": 38,
+          "cell": "B53",
+          "evaluationCell": "B39",
+          "text": "İnsanların duygularını incitebilecek konuları, haklı olsam bile direkt olarak kendilerine söylemekten hoşlanmam."
+        },
+        {
+          "id": "communication-39",
+          "number": 39,
+          "cell": "B54",
+          "evaluationCell": "B40",
+          "text": "Yoğun duygular yaşadığımda tepkilerimi kontrol etmekte zorluk yaşarım."
+        },
+        {
+          "id": "communication-40",
+          "number": 40,
+          "cell": "B55",
+          "evaluationCell": "B41",
+          "text": "Karşımdaki kişiye hiçbir tepki vermediğim, ama bir sonraki karşılaşmamızda halen o tartışmanın etkisiyle davrandığım durumlar olur."
+        }
+      ]
+    },
+    {
+      "id": "behavior",
+      "title": "Davranış tarzı",
+      "subtitle": "Sana daha yakın olan hangisi?",
+      "sheet": 4,
+      "evaluationSheet": 5,
+      "startRow": 19,
+      "count": 28,
+      "answerColumn": "D",
+      "evaluationColumn": "D",
+      "kind": "choice",
+      "instruction": "Her çiftte sana daha yakın gelen ifadeyi seç. İkisi de uyuyorsa, genel davranışını daha iyi anlatanı işaretle.",
+      "sheetName": "Davranış Tarzı Envanteri",
+      "evaluationSheetName": "Davranış Tarzı Değerlendirme",
+      "questions": [
+        {
+          "id": "behavior-1",
+          "number": 1,
+          "cell": "D19",
+          "evaluationCell": "D2",
+          "options": [
+            "Şeffaf/Açık",
+            "Mesafeli/Kişiye özel"
+          ]
+        },
+        {
+          "id": "behavior-2",
+          "number": 2,
+          "cell": "D20",
+          "evaluationCell": "D3",
+          "options": [
+            "Duygularını açıkça gösteren ve paylaşan",
+            "Duygularını mecbur kaldığında paylaşan"
+          ]
+        },
+        {
+          "id": "behavior-3",
+          "number": 3,
+          "cell": "D21",
+          "evaluationCell": "D4",
+          "options": [
+            "Değişimleri hemen gerçekleştiren",
+            "Değişimlere temkinli yaklaşan"
+          ]
+        },
+        {
+          "id": "behavior-4",
+          "number": 4,
+          "cell": "D22",
+          "evaluationCell": "D5",
+          "options": [
+            "İşleri Bitirmeye Odaklı",
+            "Süreç ve Prosedürleri Takip Etmeye Odaklı"
+          ]
+        },
+        {
+          "id": "behavior-5",
+          "number": 5,
+          "cell": "D23",
+          "evaluationCell": "D6",
+          "options": [
+            "Kararlı/Net",
+            "Çekingen"
+          ]
+        },
+        {
+          "id": "behavior-6",
+          "number": 6,
+          "cell": "D24",
+          "evaluationCell": "D7",
+          "options": [
+            "Duygularına dayanarak karar alan (Subjektif)",
+            "Gerçeklere dayanarak karar alan (Objektif)"
+          ]
+        },
+        {
+          "id": "behavior-7",
+          "number": 7,
+          "cell": "D25",
+          "evaluationCell": "D8",
+          "options": [
+            "Rahat ve sıcak",
+            "Resmi ve kendine mahsus"
+          ]
+        },
+        {
+          "id": "behavior-8",
+          "number": 8,
+          "cell": "D26",
+          "evaluationCell": "D9",
+          "options": [
+            "İnsanlara, ilişkilere ve duygulara değer veren",
+            "Gerçeklere, verilere ve sonuçlara değer veren"
+          ]
+        },
+        {
+          "id": "behavior-9",
+          "number": 9,
+          "cell": "D27",
+          "evaluationCell": "D10",
+          "options": [
+            "Konuşurken konudan ayrılan",
+            "Konuşurken konu üzerinde kalan"
+          ]
+        },
+        {
+          "id": "behavior-10",
+          "number": 10,
+          "cell": "D28",
+          "evaluationCell": "D11",
+          "options": [
+            "Konuları ses ve vücut diliyle vurgulayan",
+            "Konuları mesajın içeriğini açıklayarak vurgulayan"
+          ]
+        },
+        {
+          "id": "behavior-11",
+          "number": 11,
+          "cell": "D29",
+          "evaluationCell": "D12",
+          "options": [
+            "Tartışmaya davet eden sorular soran",
+            "Aydınlatıcı, destekleyici, bilgi verici sorular soran"
+          ]
+        },
+        {
+          "id": "behavior-12",
+          "number": 12,
+          "cell": "D30",
+          "evaluationCell": "D13",
+          "options": [
+            "Zamanın nasıl kullanıldığı konusunda esnek",
+            "Zamanın nasıl kullanıldığı konusunda disiplinli"
+          ]
+        },
+        {
+          "id": "behavior-13",
+          "number": 13,
+          "cell": "D31",
+          "evaluationCell": "D14",
+          "options": [
+            "Kişilerle çalışmayı tercih eden",
+            "Bağımsız çalışmayı tercih eden"
+          ]
+        },
+        {
+          "id": "behavior-14",
+          "number": 14,
+          "cell": "D32",
+          "evaluationCell": "D15",
+          "options": [
+            "Düşüncelerini hemen açıklayan",
+            "Düşüncelerini kendine saklamaya eğilimli"
+          ]
+        },
+        {
+          "id": "behavior-15",
+          "number": 15,
+          "cell": "D33",
+          "evaluationCell": "D16",
+          "options": [
+            "Ani hareket eden",
+            "Düşünerek hareket eden"
+          ]
+        },
+        {
+          "id": "behavior-16",
+          "number": 16,
+          "cell": "D34",
+          "evaluationCell": "D17",
+          "options": [
+            "Grup içi konuşmalara katılan",
+            "Grup içi konuşmaları genelde dinleyen"
+          ]
+        },
+        {
+          "id": "behavior-17",
+          "number": 17,
+          "cell": "D35",
+          "evaluationCell": "D18",
+          "options": [
+            "Kişisel ve ilişkiye dayalı tartışmalar yapan",
+            "Gerçeklere dayanan ve amaçla ilişkili tartışmalar yapan"
+          ]
+        },
+        {
+          "id": "behavior-18",
+          "number": 18,
+          "cell": "D36",
+          "evaluationCell": "D19",
+          "options": [
+            "Enerji dolu/Kolay telaşa kapılan",
+            "Soğukkanlı/Kontrollü"
+          ]
+        },
+        {
+          "id": "behavior-19",
+          "number": 19,
+          "cell": "D37",
+          "evaluationCell": "D20",
+          "options": [
+            "Arkadaşça tokalaşan",
+            "Normal tokalaşan"
+          ]
+        },
+        {
+          "id": "behavior-20",
+          "number": 20,
+          "cell": "D38",
+          "evaluationCell": "D21",
+          "options": [
+            "Sabırsız/Talepkar",
+            "Sabırlı/Kabullenen"
+          ]
+        },
+        {
+          "id": "behavior-21",
+          "number": 21,
+          "cell": "D39",
+          "evaluationCell": "D22",
+          "options": [
+            "Atak",
+            "Ağırkanlı"
+          ]
+        },
+        {
+          "id": "behavior-22",
+          "number": 22,
+          "cell": "D40",
+          "evaluationCell": "D23",
+          "options": [
+            "Direkt ve yüzleşen",
+            "Diplomatik ve işbirlikçi"
+          ]
+        },
+        {
+          "id": "behavior-23",
+          "number": 23,
+          "cell": "D41",
+          "evaluationCell": "D24",
+          "options": [
+            "Anlaşılması kolay, ifadesel (jest/mimiklerle) konuşan",
+            "Anlaşılması zor, az ifade kullanarak konuşan"
+          ]
+        },
+        {
+          "id": "behavior-24",
+          "number": 24,
+          "cell": "D42",
+          "evaluationCell": "D25",
+          "options": [
+            "İddiacı ve rekabetçi",
+            "İltifatçı ve destekleyici"
+          ]
+        },
+        {
+          "id": "behavior-25",
+          "number": 25,
+          "cell": "D43",
+          "evaluationCell": "D26",
+          "options": [
+            "Canlardırma yaparak konuşan",
+            "Kontrollü konuşan"
+          ]
+        },
+        {
+          "id": "behavior-26",
+          "number": 26,
+          "cell": "D44",
+          "evaluationCell": "D27",
+          "options": [
+            "Göz teması sık ve devamlı",
+            "Göz teması seyrek ve kesintili"
+          ]
+        },
+        {
+          "id": "behavior-27",
+          "number": 27,
+          "cell": "D45",
+          "evaluationCell": "D28",
+          "options": [
+            "Sosyal ortamlarda kendini tanıtan",
+            "Sosyal ortamlarda, katılımcıların kendilerini tanıtmalarını bekleyen"
+          ]
+        },
+        {
+          "id": "behavior-28",
+          "number": 28,
+          "cell": "D46",
+          "evaluationCell": "D29",
+          "options": [
+            "Oturmuş kural ve politikalardan sapmaya eğilimli",
+            "Oturmuş kural ve politikaları takip etmeye eğilimli"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "motivation",
+      "title": "Motivasyon ihtiyacı",
+      "subtitle": "Çalışma ortamını nasıl görüyorsun?",
+      "sheet": 6,
+      "evaluationSheet": 7,
+      "startRow": 2,
+      "count": 40,
+      "answerColumn": "B",
+      "evaluationColumn": "B",
+      "kind": "scale",
+      "max": 4,
+      "instruction": "Şablondaki “Şirketimde birlikte çalıştığım kişiler” ifadesini esas alarak, birlikte çalıştığın kişilerin davranışlarını 1–4 arasında puanla.",
+      "labels": [
+        "Hiçbir zaman",
+        "Nadiren",
+        "Çoğunlukla",
+        "Her zaman"
+      ],
+      "sheetName": "Motivasyon İhtiyacı",
+      "evaluationSheetName": "Motivasyon Değerlendirme",
+      "questions": [
+        {
+          "id": "motivation-1",
+          "number": 1,
+          "cell": "B2",
+          "evaluationCell": "B2",
+          "text": "Realistik hedefler koymaktan ve işlerin bitirilmesinden hoşlanırlar"
+        },
+        {
+          "id": "motivation-2",
+          "number": 2,
+          "cell": "B3",
+          "evaluationCell": "B3",
+          "text": "Saldırgan değil tam tersine son derece sıcaktırlar"
+        },
+        {
+          "id": "motivation-3",
+          "number": 3,
+          "cell": "B4",
+          "evaluationCell": "B4",
+          "text": "Sıkı tartışmalardan ve şirket içi rekabetten hoşlanırlar"
+        },
+        {
+          "id": "motivation-4",
+          "number": 4,
+          "cell": "B5",
+          "evaluationCell": "B5",
+          "text": "Başkalarının kendilerine ne denli saygı gösterdiği onlar için önemlidir"
+        },
+        {
+          "id": "motivation-5",
+          "number": 5,
+          "cell": "B6",
+          "evaluationCell": "B6",
+          "text": "Görevlere yaklaşımları oldukça sistematiktir"
+        },
+        {
+          "id": "motivation-6",
+          "number": 6,
+          "cell": "B7",
+          "evaluationCell": "B7",
+          "text": "Profesyonel ve konuların üzerine giden bir yapıları vardır"
+        },
+        {
+          "id": "motivation-7",
+          "number": 7,
+          "cell": "B8",
+          "evaluationCell": "B8",
+          "text": "Farklılık onları rahatsız eder, sakin ve soğuk kişileri sevmezler"
+        },
+        {
+          "id": "motivation-8",
+          "number": 8,
+          "cell": "B9",
+          "evaluationCell": "B9",
+          "text": "İşlerde öneri ve tavsiyeleri göz önüne alırlar"
+        },
+        {
+          "id": "motivation-9",
+          "number": 9,
+          "cell": "B10",
+          "evaluationCell": "B10",
+          "text": "Yaptıkları her işte en yüksek kalite düzeyi mevcuttur"
+        },
+        {
+          "id": "motivation-10",
+          "number": 10,
+          "cell": "B11",
+          "evaluationCell": "B11",
+          "text": "Başkalarının kendilerini etkin bulması onlar için önemlidir"
+        },
+        {
+          "id": "motivation-11",
+          "number": 11,
+          "cell": "B12",
+          "evaluationCell": "B12",
+          "text": "Kendilerini etkileyebilecek değişiklikler hakkında temkinlidirler"
+        },
+        {
+          "id": "motivation-12",
+          "number": 12,
+          "cell": "B13",
+          "evaluationCell": "B13",
+          "text": "Başarılmış bir görevde övgüleri üzerine çekmeyi bilirler"
+        },
+        {
+          "id": "motivation-13",
+          "number": 13,
+          "cell": "B14",
+          "evaluationCell": "B14",
+          "text": "Risk almada son derece iyidirler"
+        },
+        {
+          "id": "motivation-14",
+          "number": 14,
+          "cell": "B15",
+          "evaluationCell": "B15",
+          "text": "Aniden bir fikir oluşturur ve diğerlerini bunun doğruluğu hakkında ikna ederler"
+        },
+        {
+          "id": "motivation-15",
+          "number": 15,
+          "cell": "B16",
+          "evaluationCell": "B16",
+          "text": "Sahip oldukları statü onlar için çok önemlidir"
+        },
+        {
+          "id": "motivation-16",
+          "number": 16,
+          "cell": "B17",
+          "evaluationCell": "B17",
+          "text": "Konuşmaları önce iş dışı konular ile başlar"
+        },
+        {
+          "id": "motivation-17",
+          "number": 17,
+          "cell": "B18",
+          "evaluationCell": "B18",
+          "text": "Başkalarının işteki mutluluğu ile yakınen ilgilenirler"
+        },
+        {
+          "id": "motivation-18",
+          "number": 18,
+          "cell": "B19",
+          "evaluationCell": "B19",
+          "text": "Rahatlıkla yakalanabilecek hedefler saptama eğilimleri vardır"
+        },
+        {
+          "id": "motivation-19",
+          "number": 19,
+          "cell": "B20",
+          "evaluationCell": "B20",
+          "text": "Kendileri fikirleri başlatmadığı gibi başlatan diğer kişilere karşı da reaksiyon gösterirler"
+        },
+        {
+          "id": "motivation-20",
+          "number": 20,
+          "cell": "B21",
+          "evaluationCell": "B21",
+          "text": "Başı çekmeye gönüllüdürler"
+        },
+        {
+          "id": "motivation-21",
+          "number": 21,
+          "cell": "B22",
+          "evaluationCell": "B22",
+          "text": "Fikir ve tekliflerini yönetime götürmek için her fırsatı kullanırlar"
+        },
+        {
+          "id": "motivation-22",
+          "number": 22,
+          "cell": "B23",
+          "evaluationCell": "B23",
+          "text": "Kendi gelişim ve ilerleme planlarını kendileri hazırlarlar"
+        },
+        {
+          "id": "motivation-23",
+          "number": 23,
+          "cell": "B24",
+          "evaluationCell": "B24",
+          "text": "Performans değerlendirmelerini dört gözle beklerler"
+        },
+        {
+          "id": "motivation-24",
+          "number": 24,
+          "cell": "B25",
+          "evaluationCell": "B25",
+          "text": "Sürekli olarak başka firmaları araştırırlar"
+        },
+        {
+          "id": "motivation-25",
+          "number": 25,
+          "cell": "B26",
+          "evaluationCell": "B26",
+          "text": "Gerçek yüzlerini ortaya çıkarmadan önce karşısındaki kişileri iyice tanımayı beklerler"
+        },
+        {
+          "id": "motivation-26",
+          "number": 26,
+          "cell": "B27",
+          "evaluationCell": "B27",
+          "text": "Başkaları ile çatışma yaşamaktan kaçınırlar"
+        },
+        {
+          "id": "motivation-27",
+          "number": 27,
+          "cell": "B28",
+          "evaluationCell": "B28",
+          "text": "Sohbetin devamlı olması için çaba sarfeder ve sessizlikten hoşlanmazlar"
+        },
+        {
+          "id": "motivation-28",
+          "number": 28,
+          "cell": "B29",
+          "evaluationCell": "B29",
+          "text": "Başarılı şekilde sonuçlandırdıkları işler için başkaları önünde övgü beklerler"
+        },
+        {
+          "id": "motivation-29",
+          "number": 29,
+          "cell": "B30",
+          "evaluationCell": "B30",
+          "text": "Grup adına sözcü olmaktan hoşlanırlar"
+        },
+        {
+          "id": "motivation-30",
+          "number": 30,
+          "cell": "B31",
+          "evaluationCell": "B31",
+          "text": "Karar verirken temkinli ve emin adımlar atarlar"
+        },
+        {
+          "id": "motivation-31",
+          "number": 31,
+          "cell": "B32",
+          "evaluationCell": "B32",
+          "text": "Organizasyonun finansal sonuçları ile yakından ilgilidirler"
+        },
+        {
+          "id": "motivation-32",
+          "number": 32,
+          "cell": "B33",
+          "evaluationCell": "B33",
+          "text": "Ölçülebilen hedefler saptamaktan hoşlanırlar"
+        },
+        {
+          "id": "motivation-33",
+          "number": 33,
+          "cell": "B34",
+          "evaluationCell": "B34",
+          "text": "Yakın takip altında çalışamazlar"
+        },
+        {
+          "id": "motivation-34",
+          "number": 34,
+          "cell": "B35",
+          "evaluationCell": "B35",
+          "text": "Yakın kişisel ilişkiler kurabilmek için çalışır dururlar"
+        },
+        {
+          "id": "motivation-35",
+          "number": 35,
+          "cell": "B36",
+          "evaluationCell": "B36",
+          "text": "Kendilerine güvenleri yoktur"
+        },
+        {
+          "id": "motivation-36",
+          "number": 36,
+          "cell": "B37",
+          "evaluationCell": "B37",
+          "text": "Kendi görüşleri ile konuşmaları tekelleri altına alırlar"
+        },
+        {
+          "id": "motivation-37",
+          "number": 37,
+          "cell": "B38",
+          "evaluationCell": "B38",
+          "text": "Grup halinde çalışmayı yeğlerler"
+        },
+        {
+          "id": "motivation-38",
+          "number": 38,
+          "cell": "B39",
+          "evaluationCell": "B39",
+          "text": "Yeni şeyler öğrenmekten zevk alırlar"
+        },
+        {
+          "id": "motivation-39",
+          "number": 39,
+          "cell": "B40",
+          "evaluationCell": "B40",
+          "text": "Eleştiriye sert tepki verirler"
+        },
+        {
+          "id": "motivation-40",
+          "number": 40,
+          "cell": "B41",
+          "evaluationCell": "B41",
+          "text": "Daha az şanslı olanlara sempati dağıtırlar"
+        }
+      ]
+    },
+    {
+      "id": "control",
+      "title": "Kontrol odağı",
+      "subtitle": "Olaylara hangi açıdan bakıyorsun?",
+      "sheet": 8,
+      "evaluationSheet": 9,
+      "startRow": 2,
+      "count": 29,
+      "answerColumn": "D",
+      "evaluationColumn": "D",
+      "kind": "choice",
+      "instruction": "Her çiftte görüşünü daha iyi yansıtan ifadeyi seç. Bu bölüm Excel’de “İç-Dış Motivasyon” adıyla yer alır.",
+      "sheetName": "İç-Dış Motivasyon",
+      "evaluationSheetName": "İç-Dış Motivasyon Değerlendirme",
+      "questions": [
+        {
+          "id": "control-1",
+          "number": 1,
+          "cell": "D2",
+          "evaluationCell": "D1",
+          "options": [
+            "Ana babaları onları çok fazla cezalandırdıkları için çocuklar problemli oluyor",
+            "Günümüz çocuklarının çoğunun problemi, ana-babaları tarafından aşırı serbest bırakılmalarıdır"
+          ]
+        },
+        {
+          "id": "control-2",
+          "number": 2,
+          "cell": "D3",
+          "evaluationCell": "D2",
+          "options": [
+            "İnsanların yaşamındaki mutsuzlukların çoğu biraz da şanssızlıklarına bağlıdır",
+            "İnsanların talihsizlikleri yaptıkları hataların sonucudur"
+          ]
+        },
+        {
+          "id": "control-3",
+          "number": 3,
+          "cell": "D4",
+          "evaluationCell": "D3",
+          "options": [
+            "Savaşların başlıca nedenlerinden biri, halkın siyasetle yeterince ilgilenmemesidir",
+            "İnsanlar savaşı önlemek için ne kadar çaba harcarsa harcasın, her zaman savaş olacaktır"
+          ]
+        },
+        {
+          "id": "control-4",
+          "number": 4,
+          "cell": "D5",
+          "evaluationCell": "D4",
+          "options": [
+            "İnsanlar bu dünyada hak ettikleri saygıyı er geç görürler",
+            "İnsan ne kadar çabalarsa çabalasın ne yazık ki değerleri genellikle anlaşılmaz"
+          ]
+        },
+        {
+          "id": "control-5",
+          "number": 5,
+          "cell": "D6",
+          "evaluationCell": "D5",
+          "options": [
+            "Öğretmenlerin öğrencilere haksızlık yaptığı fikri saçmadır",
+            "Öğrencilerin çoğu, notların tesadüfî olaylardan etkilendiğini fark etmez"
+          ]
+        },
+        {
+          "id": "control-6",
+          "number": 6,
+          "cell": "D7",
+          "evaluationCell": "D6",
+          "options": [
+            "Koşullar uygun değilse insan başarılı bir lider olamaz",
+            "Lider olamayan yetenekli insanlar, fırsatları değerlendirememiş kişilerdir"
+          ]
+        },
+        {
+          "id": "control-7",
+          "number": 7,
+          "cell": "D8",
+          "evaluationCell": "D7",
+          "options": [
+            "Ne kadar uğraşsanız da bazı insanlar sizden hoşlanmazlar",
+            "Kendilerini başkalarına sevdiremeyen kişiler, başkalarıyla nasıl geçinileceğini bilmeyenlerdir"
+          ]
+        },
+        {
+          "id": "control-8",
+          "number": 8,
+          "cell": "D9",
+          "evaluationCell": "D8",
+          "options": [
+            "İnsanın kişiliğinin belirlenmesinde en önemli rolü kalıtım oynar",
+            "İnsanların nasıl biri olacağını kendi hayat tecrübeleri belirler"
+          ]
+        },
+        {
+          "id": "control-9",
+          "number": 9,
+          "cell": "D10",
+          "evaluationCell": "D9",
+          "options": [
+            "Bir şey olacaksa eninde sonunda olduğuna sık sık tanık olmuşumdur",
+            "Ne yapacağıma kesin karar vermek kadere güvenmekten daima daha iyidir"
+          ]
+        },
+        {
+          "id": "control-10",
+          "number": 10,
+          "cell": "D11",
+          "evaluationCell": "D10",
+          "options": [
+            "İyi hazırlanmış bir öğrenci için, adil olmayan bir sınav hemen hemen söz konusu olamaz",
+            "Sınav soruları derste işlenenle çoğu kez o kadar ilişkisiz oluyor ki sınava çalışmanın anlamı kalmıyor"
+          ]
+        },
+        {
+          "id": "control-11",
+          "number": 11,
+          "cell": "D12",
+          "evaluationCell": "D11",
+          "options": [
+            "Başarılı olmak çok çalışmaya bağlıdır; şansın bunda ya hiç payı yoktur ya da çok küçük payı vardır",
+            "İyi bir iş bulmak, temelde, doğru zamanda doğru yerde bulunmaya bağlıdır"
+          ]
+        },
+        {
+          "id": "control-12",
+          "number": 12,
+          "cell": "D13",
+          "evaluationCell": "D12",
+          "options": [
+            "Hükümetin kararlarında sade vatandaş da etkili olabilir",
+            "Bu dünya güç sahibi birkaç kişi tarafından yönetilmektedir. Ve sade vatandaşın bu konuda Yapabileceği fazla bir şey yoktur"
+          ]
+        },
+        {
+          "id": "control-13",
+          "number": 13,
+          "cell": "D14",
+          "evaluationCell": "D13",
+          "options": [
+            "Yaptığım planları yürütebileceğimden hemen hemen eminimdir",
+            "Çok uzun vadeli planlar yapmak her zaman akıllıca olmayabilir, çünkü bir çok şey zaten iyi ya da kötü şansa bağlıdır"
+          ]
+        },
+        {
+          "id": "control-14",
+          "number": 14,
+          "cell": "D15",
+          "evaluationCell": "D14",
+          "options": [
+            "Hiçbir yönü iyi olmayan insanlar vardır",
+            "Herkesin iyi bir tarafı vardır"
+          ]
+        },
+        {
+          "id": "control-15",
+          "number": 15,
+          "cell": "D16",
+          "evaluationCell": "D15",
+          "options": [
+            "Benim açımdan istediğimi elde etmenin talihle bir ilgisi yoktur",
+            "Çoğu durumda, yazı tura atarak da isabetli kararlar verebiliriz"
+          ]
+        },
+        {
+          "id": "control-16",
+          "number": 16,
+          "cell": "D17",
+          "evaluationCell": "D16",
+          "options": [
+            "Kimin patron olacağı genellikle doğru yerde ilk önce bulunma şansına kimin sahip olduğuna bağlıdır",
+            "İnsanlara doğru şeyi yaptırmak bir yetenek işidir; şansın bunda payı ya hiç yoktur ya da çok azdır"
+          ]
+        },
+        {
+          "id": "control-17",
+          "number": 17,
+          "cell": "D18",
+          "evaluationCell": "D17",
+          "options": [
+            "Dünya meseleleri söz konusu olduğunda çoğumuz, anlayamadığımız ve kontrol edemediğimiz güçlerin kurbanıyız",
+            "İnsanlar, siyasal ve sosyal konularda aktif rol alarak dünya olaylarını kontrol edebilirler"
+          ]
+        },
+        {
+          "id": "control-18",
+          "number": 18,
+          "cell": "D19",
+          "evaluationCell": "D18",
+          "options": [
+            "Birçok insan, rastlantıların yaşamlarını ne derece etkilediğinin farkında değildir",
+            "Aslında “şans” diye bir şey yoktur"
+          ]
+        },
+        {
+          "id": "control-19",
+          "number": 19,
+          "cell": "D20",
+          "evaluationCell": "D19",
+          "options": [
+            "İnsan, hatalarını kabul edebilmelidir",
+            "Genelde en iyisi insanının hatalarını örtbas etmesidir"
+          ]
+        },
+        {
+          "id": "control-20",
+          "number": 20,
+          "cell": "D21",
+          "evaluationCell": "D20",
+          "options": [
+            "Bir insanın sizden gerçekten hoşlanıp hoşlanmadığını bilmek zordur",
+            "Kaç arkadaşınızın olduğu, ne kadar iyi olduğunuza bağlıdır"
+          ]
+        },
+        {
+          "id": "control-21",
+          "number": 21,
+          "cell": "D22",
+          "evaluationCell": "D21",
+          "options": [
+            "Uzun vadede yaşamımızdaki kötü şeyler, işi şeylerle dengelenir",
+            "Çoğu talihsizlikler yetenek eksikliğinin, ihmalin, tembelliğin ya da her üçünün birden sonucudur"
+          ]
+        },
+        {
+          "id": "control-22",
+          "number": 22,
+          "cell": "D23",
+          "evaluationCell": "D22",
+          "options": [
+            "Yeterli çabayla siyasal yolsuzlukları ortadan kaldırabiliriz",
+            "Siyasetçilerin kapalı kapılar ardında yaptıkları üzerinde halkın fazla bir kontrolü yoktur"
+          ]
+        },
+        {
+          "id": "control-23",
+          "number": 23,
+          "cell": "D24",
+          "evaluationCell": "D23",
+          "options": [
+            "Öğretmenlerin verdikleri notları nasıl belirlediklerini bazen anlamıyorum",
+            "Aldığım notlarla çalışma derecem arasında doğrudan bir bağlantı vardır"
+          ]
+        },
+        {
+          "id": "control-24",
+          "number": 24,
+          "cell": "D25",
+          "evaluationCell": "D24",
+          "options": [
+            "İyi bir lider, ne yapacaklarına halkın bizzat karar vermesini bekler",
+            "İyi bir lider herkesin görevinin ne olduğunu bizzat belirler"
+          ]
+        },
+        {
+          "id": "control-25",
+          "number": 25,
+          "cell": "D26",
+          "evaluationCell": "D25",
+          "options": [
+            "Çoğu kez başıma gelenler üzerinde çok az etkiye sahip olduğumu hissederim",
+            "Şans ya da talihin yaşamında önemli bir rol oynadığına inanmam"
+          ]
+        },
+        {
+          "id": "control-26",
+          "number": 26,
+          "cell": "D27",
+          "evaluationCell": "D26",
+          "options": [
+            "İnsanlar arkadaşça olmaya çalışmadıkları için yalnızdırlar",
+            "İnsanları memnun etmek için çok fazla çabalamanın yararı yoktur, sizden hoşlanırsa hoşlanırlar"
+          ]
+        },
+        {
+          "id": "control-27",
+          "number": 27,
+          "cell": "D28",
+          "evaluationCell": "D27",
+          "options": [
+            "Okullarda atletizme gereğinden fazla önem veriliyor",
+            "Takım sporları kişiliğin oluşumu için mükemmel bir yoldur"
+          ]
+        },
+        {
+          "id": "control-28",
+          "number": 28,
+          "cell": "D29",
+          "evaluationCell": "D28",
+          "options": [
+            "Başıma ne gelmişse kendi yaptıklarımdandır",
+            "Yaşamımın alacağı yön üzerinde bazen yeterince kontrolümün olmadığını hissediyorum"
+          ]
+        },
+        {
+          "id": "control-29",
+          "number": 29,
+          "cell": "D30",
+          "evaluationCell": "D29",
+          "options": [
+            "Siyasetçilerin neden öyle davrandıklarını çoğu kez anlamıyorum",
+            "Yerel ve ulusal düzeydeki kötü idareden uzun vadede halk sorumludur"
+          ]
+        }
+      ]
+    }
+  ],
+  "formulas": {
+    "1": {},
+    "2": {},
+    "3": {
+      "E3": "SUM(B2+B6+B10+B14+B18+B22+B26+B30+B34+B38)",
+      "E4": "SUM(B3+B7+B11+B15+B19+B23+B27+B31+B35+B39)",
+      "E5": "SUM(B4+B8+B12+B16+B20+B24+B28+B32+B36+B40)",
+      "E6": "SUM(B5+B9+B13+B17+B21+B25+B29+B33+B37+B41)",
+      "E7": "SUM(E3:E6)",
+      "H13": "E3",
+      "H14": "E4",
+      "H15": "E5",
+      "H16": "E6",
+      "H17": "E7"
+    },
+    "4": {},
+    "5": {
+      "G3": "IF(D4=1,1,0)",
+      "H3": "IF(D4=2,1,0)",
+      "J3": "IF(D2=1,1,0)",
+      "K3": "IF(D2=2,1,0)",
+      "G4": "IF(D5=1,1,0)",
+      "H4": "IF(D5=2,1,0)",
+      "J4": "IF(D3=1,1,0)",
+      "K4": "IF(D3=2,1,0)",
+      "G5": "IF(D6=1,1,0)",
+      "H5": "IF(D6=2,1,0)",
+      "J5": "IF(D7=1,1,0)",
+      "K5": "IF(D7=2,1,0)",
+      "G6": "IF(D11=1,1,0)",
+      "H6": "IF(D11=2,1,0)",
+      "J6": "IF(D8=1,1,0)",
+      "K6": "IF(D8=2,1,0)",
+      "G7": "IF(D12=1,1,0)",
+      "H7": "IF(D12=2,1,0)",
+      "J7": "IF(D9=1,1,0)",
+      "K7": "IF(D9=2,1,0)",
+      "G8": "IF(D15=1,1,0)",
+      "H8": "IF(D15=2,1,0)",
+      "J8": "IF(D10=1,1,0)",
+      "K8": "IF(D10=2,1,0)",
+      "G9": "IF(D17=1,1,0)",
+      "H9": "IF(D17=2,1,0)",
+      "J9": "IF(D13=1,1,0)",
+      "K9": "IF(D13=2,1,0)",
+      "G10": "IF(D21=1,1,0)",
+      "H10": "IF(D21=2,1,0)",
+      "J10": "IF(D14=1,1,0)",
+      "K10": "IF(D14=2,1,0)",
+      "G11": "IF(D22=1,1,0)",
+      "H11": "IF(D22=2,1,0)",
+      "J11": "IF(D16=1,1,0)",
+      "K11": "IF(D16=2,1,0)",
+      "G12": "IF(D23=1,1,0)",
+      "H12": "IF(D23=2,1,0)",
+      "J12": "IF(D18=1,1,0)",
+      "K12": "IF(D18=2,1,0)",
+      "G13": "IF(D25=1,1,0)",
+      "H13": "IF(D25=2,1,0)",
+      "J13": "IF(D19=1,1,0)",
+      "K13": "IF(D19=2,1,0)",
+      "G14": "IF(D27=1,1,0)",
+      "H14": "IF(D27=2,1,0)",
+      "J14": "IF(D20=1,1,0)",
+      "K14": "IF(D20=2,1,0)",
+      "G15": "IF(D28=1,1,0)",
+      "H15": "IF(D28=2,1,0)",
+      "J15": "IF(D24=1,1,0)",
+      "K15": "IF(D24=2,1,0)",
+      "G16": "IF(D29=1,1,0)",
+      "H16": "IF(D29=2,1,0)",
+      "J16": "IF(D26=1,1,0)",
+      "K16": "IF(D26=2,1,0)",
+      "G17": "SUM(G3:G16)",
+      "H17": "SUM(H3:H16)",
+      "J17": "SUM(J3:J16)",
+      "K17": "SUM(K3:K16)",
+      "O42": "G17",
+      "R42": "H17",
+      "U42": "J17",
+      "X42": "K17"
+    },
+    "6": {},
+    "7": {
+      "E4": "B2",
+      "H4": "B4",
+      "K4": "SUM(E4:E13)",
+      "E5": "B6",
+      "H5": "B9",
+      "K5": "SUM(H4:H13)",
+      "E6": "B7",
+      "H6": "B10",
+      "K6": "SUM(E16:E25)",
+      "E7": "B13",
+      "H7": "B15",
+      "K7": "SUM(H16:H25)",
+      "E8": "B14",
+      "H8": "B16",
+      "K8": "SUM(K4:K7)",
+      "E9": "B23",
+      "H9": "B21",
+      "E10": "B24",
+      "H10": "B22",
+      "E11": "B33",
+      "H11": "B29",
+      "E12": "B34",
+      "H12": "B30",
+      "E13": "B39",
+      "H13": "B37",
+      "E16": "B3",
+      "H16": "B5",
+      "E17": "B8",
+      "H17": "B11",
+      "E18": "B17",
+      "H18": "B12",
+      "E19": "B18",
+      "H19": "B19",
+      "E20": "B25",
+      "H20": "B20",
+      "E21": "B27",
+      "H21": "B26",
+      "E22": "B28",
+      "H22": "B31",
+      "E23": "B35",
+      "H23": "B32",
+      "E24": "B38",
+      "H24": "B36",
+      "E25": "B41",
+      "H25": "B40"
+    },
+    "8": {},
+    "9": {
+      "F2": "IF(D2=2,1,0)",
+      "F3": "IF(D3=1,1,0)",
+      "F4": "IF(D4=1,1,0)",
+      "F5": "IF(D5=1,1,0)",
+      "F6": "IF(D6=2,1,0)",
+      "F7": "IF(D7=2,1,0)",
+      "F9": "IF(D9=2,1,0)",
+      "F10": "IF(D10=1,1,0)",
+      "F11": "IF(D11=1,1,0)",
+      "F12": "IF(D12=1,1,0)",
+      "F13": "IF(D13=1,1,0)",
+      "F15": "IF(D15=1,1,0)",
+      "F16": "IF(D16=2,1,0)",
+      "F17": "IF(D17=2,1,0)",
+      "F18": "IF(D18=2,1,0)",
+      "F20": "IF(D20=2,1,0)",
+      "F21": "IF(D21=2,1,0)",
+      "F22": "IF(D22=1,1,0)",
+      "F23": "IF(D23=2,1,0)",
+      "F25": "IF(D25=2,1,0)",
+      "F26": "IF(D26=1,1,0)",
+      "F28": "IF(D28=1,1,0)",
+      "F29": "IF(D29=2,1,0)",
+      "F30": "SUM(F2:F29)"
+    }
+  },
+  "blankCells": {
+    "9": [
+      "F8",
+      "F14",
+      "F19",
+      "F24",
+      "F27"
+    ]
+  },
+  "drawingLayout": {
+    "control": {
+      "columns": [
+        {
+          "width": 3.33203125,
+          "hidden": false
+        },
+        {
+          "width": 63.33203125,
+          "hidden": true
+        },
+        {
+          "width": 67.6640625,
+          "hidden": true
+        },
+        {
+          "width": 12.0,
+          "hidden": false
+        },
+        {
+          "width": 13.33203125,
+          "hidden": false
+        },
+        {
+          "width": 6.0,
+          "hidden": false
+        },
+        {
+          "width": 7.5,
+          "hidden": false
+        },
+        {
+          "width": 13.33203125,
+          "hidden": false
+        },
+        {
+          "width": 13.33203125,
+          "hidden": false
+        },
+        {
+          "width": 13.33203125,
+          "hidden": false
+        },
+        {
+          "width": 13.33203125,
+          "hidden": false
+        },
+        {
+          "width": 13.33203125,
+          "hidden": false
+        },
+        {
+          "width": 13.33203125,
+          "hidden": false
+        },
+        {
+          "width": 13.33203125,
+          "hidden": false
+        },
+        {
+          "width": 50.5,
+          "hidden": false
+        },
+        {
+          "width": 104.0,
+          "hidden": false
+        }
+      ]
+    }
+  }
+}
