@@ -10,6 +10,7 @@ const server = createServer(async (req, res) => {
   try {
     const url = new URL(req.url, 'http://localhost');
     const relative = decodeURIComponent(url.pathname);
+    if (relative.split('/').some(part => ['private-fixtures', 'test-output', 'node_modules', '.git'].includes(part))) { res.writeHead(404).end(); return; }
     const path = resolve(root, '.' + relative);
     if (path !== root && !path.startsWith(root + sep)) { res.writeHead(403).end(); return; }
     const file = (await stat(path)).isDirectory() ? resolve(path, 'index.html') : path;
@@ -18,5 +19,5 @@ const server = createServer(async (req, res) => {
     res.end(bytes);
   } catch { res.writeHead(404).end('Not found'); }
 });
-server.listen(port, '127.0.0.1', () => console.log(`Rise Up: http://127.0.0.1:${port}`));
+server.listen(port, '127.0.0.1', () => console.log(`Envanter: http://127.0.0.1:${port}`));
 for (const signal of ['SIGTERM', 'SIGINT']) process.on(signal, () => server.close(() => process.exit()));

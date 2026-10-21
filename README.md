@@ -1,97 +1,72 @@
-# Rise Up ekip envanterleri
+# Envanter
 
-Ekibin dört envanteri web arayüzünde doldurur. Uygulama cevapları orijinal Excel şablonuna aktarır, değerlendirme sekmelerini doldurur ve kişiye özel `.xlsx` indirir. Katılımcı dosyayı yöneticisiyle kendisi paylaşır.
+İki ayrı akış vardır:
 
-## Yerelde çalıştırma
+- **`index.html` — katılımcı:** dört envanteri doldurur, yalnızca kimlik bilgileri ve 137 cevabını içeren Excel’i indirir. Sonuç grafikleri, değerlendirme sayfaları ve puanlar katılımcı çıktısında bulunmaz.
+- **`analiz-982429.html` — yönetici:** maildeki iki boş şablonu ve katılımcı dosyalarını seçer. Bireysel değerlendirmeleri tek tek veya ZIP olarak, ekip analizini özgün formatında Excel olarak indirir.
 
-Node.js 20 veya üzeri yeterli. Paket kurulumu ve derleme gerekmiyor.
+## Yönetici kullanımı
+
+1. Site adresinin sonuna `/analiz-982429.html` ekle.
+2. Maildeki boş `Envanterler-Uygulama Dosyası.xlsx` ve `EkipAnalizi.xlsx` dosyalarını seç.
+3. Ekipten gelen cevap Excel’lerini topluca yükle. Uygulamanın eski sürümünde üretilmiş değerlendirmeli dosyalar da desteklenir. PDF profilleme raporları bu yükleyicide desteklenmez.
+4. Dosya hatalarını kontrol et. Eksik/geçersiz cevaplar veya aynı ad-soyad ve unvana sahip tekrar kayıtlar listeye alınmaz. Bir kişinin güncel dosyası için önce önceki kaydı kaldır.
+5. Gerekirse bir kişiyi **Benim profilim** olarak seç. Ekip ortalamasına dahil edilmez ve şablonun ayrı profil satırına yazılır. Kaynağın bireysel profilleme PDF’i ise bu alanı boş bırakıp indirilen Excel’e raporundan elle aktar.
+6. **Bireysel değerlendirmeler** ile orijinal 9 sayfalı dosyaları, **Ekip analizi** ile maildeki `Genel Data` düzenini indir.
+
+Ekip şablonunun sırası korunur: davranış (renk, direkt, indirekt, insan, iş), iletişim (güvenli, agresif, pasif-agresif, pasif, toplam), motivasyon (ilişki, etkileme, güvenlik, başarı, toplam), kontrol odağı. On kişiden fazla ekiplerde satırlar, ortalamalar ve profil alanı genişletilir. Tek seferde 200 dosya, dosya başına 8 MB desteklenir.
+
+Davranış rengi önerisi, özgün haritada alanı en büyük olan bölgeye göre üretilir: sol üst Mavi, sağ üst Kırmızı, sağ alt Sarı, sol alt Yeşil. Eşit alanlı bölgeler birlikte yazılır; yönetici öneriyi değiştirebilir. Sayfadaki ekip haritasında yatay koordinat direkt–indirekt, dikey koordinat insan–iş puan farkıdır. Kişisel grafikler yalnızca analiz sayfasında gösterilir.
+
+## Katılımcı ve kayıt
+
+- İletişim: 40 soru, 1–5. Davranış: 28 soru, A/B. Motivasyon: 40 soru, 1–4. İç-dış kontrol: 29 soru, A/B.
+- Beşerli soru sayfaları, eksik yanıt denetimi ve ad-soyad/unvan doğrulaması korunur.
+- Yanıtlar ve son açık sayfa `localStorage` ile aynı origin, cihaz ve tarayıcı profilinde saklanır. Eski `sessionStorage` taslağı, kalıcı kayıt yoksa taşınır. Cihazlar arası senkronizasyon yoktur.
+- **Yanıtları temizle** uygulamanın kalıcı ve eski oturum kaydını siler. Gizli mod veya site verilerinin silinmesi kaydı kaldırabilir. Aynı anda birkaç sekmede düzenlemede son kayıt geçerlidir.
+- Motivasyon yönergesi özgün dosyadaki “Şirketimde birlikte çalıştığım kişiler” ifadesini korur. 2 “Nadiren”, 3 “Çoğunlukla” açıklamaları arayüzde eklenmiştir; kaynak yalnızca 1 ve 4 uçlarını tanımlar.
+
+## Veri ve erişim
+
+Dosyalar ve cevaplar sunucuya gönderilmez. Analiz sayfasına yüklenen dosyalar yalnızca bellekte tutulur; sayfayı kapatınca veya **Yüklenen dosyaları temizle** ile kaldırılır. Kişisel dosyalar, e-posta ve değerlendirme şablonları depoya yüklenmez. Kamuya açık `data/survey.json` artık puanlama formülleri içermez; analiz bu formülleri yöneticinin yüklediği şablondan okur.
+
+Ayrı analiz URL’si bir yetkilendirme sınırı değildir. Bu statik uygulamada giriş kontrolü yoktur. Şablona ve cevap dosyalarına sahip biri analiz yapabilir. Daha önce yayınlanan dosyalar tarayıcı önbelleğinde, eski indirmelerde veya Git geçmişinde bulunabilir; yeni sürüm onları geri alamaz.
+
+## Yerel çalışma ve GitHub Pages
+
+Node.js 20 veya üstüyle, ek paket kurulmadan:
 
 ```sh
-cd /Users/yseker/Desktop/riseup/riseup-app
 npm run dev
 ```
 
-Tarayıcıda `http://127.0.0.1:4173` adresini aç. `index.html` dosyasını çift tıklayarak açmak yerine HTTP sunucusunu kullan; tarayıcı ES modülleri ve şablon dosyası için bunu gerektirir.
+Katılımcı: `http://127.0.0.1:4173/`; yönetici: `http://127.0.0.1:4173/analiz-982429.html`.
 
-## GitHub Pages ile yayınlama
+GitHub Pages için bu klasörün **takip edilen** dosyalarını yayımla: Settings → Pages → Deploy from a branch → main → root. Tüm yollar göreli ve `.nojekyll` mevcuttur. `private-fixtures/`, `test-output/`, `node_modules/` ve üst klasördeki kişisel belgeleri hiçbir zaman yayın paketine ekleme. Yerel sunucu da bu özel klasörleri sunmaz.
 
-1. Yeni bir GitHub deposu aç. **Yalnızca bu `riseup-app` klasörünün içeriğini** deponun köküne koy. Üst klasördeki e-postayı, bireysel profilleme raporunu ve diğer kişisel belgeleri yükleme.
-2. Varsayılan dalına dosyaları gönder.
-3. **Settings → Pages → Build and deployment → Source: Deploy from a branch** seç.
-4. Dal olarak varsayılan dalını, klasör olarak **`/ (root)`** seçip kaydet.
-5. GitHub’ın verdiği Pages bağlantısını ekiple paylaş.
+Private Git deposu tek başına siteye erişimi kısıtlamaz. Erişim kontrolü gerekiyorsa hosting katmanında yapılandırılmalıdır; `noindex` bir erişim kontrolü değildir.
 
-Tüm varlık yolları göreli. `https://kullanici.github.io/depo-adi/` gibi bir alt dizinde çalışır. `.nojekyll` dosyası mevcut; npm kurulumu, GitHub Actions veya bir sunucu uygulaması gerekmez.
+## Excel üretimi
 
-### Private erişim
+Katılımcı şablonu `assets/cevap-sablonu.xlsx` beş görünür sayfa içerir: `Katılımcı` ve dört soru sayfası. Kimlik B2/B3, format etiketi B4, soruların sıra numarası A, cevapları D sütunundadır. Gizli değerlendirme sayfası, formül, grafik veya çizim bulunmaz. Metin değerleri formül olarak çalıştırılmaz.
 
-**Private depo, private Pages sitesi anlamına gelmez.** GitHub Pages sitesine erişimi kısıtlamak için GitHub Enterprise Cloud kullanan bir organizasyona ait private/internal proje deposu ve Pages erişim ayarı gerekir. Normal kişisel private depodan yayınlanan sitenin gizli olduğunu varsayma. Depoyu private tutarak Pages kullanabilme imkânı da GitHub planına bağlıdır.
+Yöneticinin yüklediği özgün envanter şablonu ZIP/OOXML alanları değiştirilerek doldurulur. Dokuz sekme, stiller, görseller, yazdırma alanları ve 143 özgün formül korunur. A/B cevapları değerlendirmede 1/2’ye çevrilir; formül ve grafik önbellekleri, davranış dikdörtgeni ve kontrol odağı göstergesi güncellenir. Kontrol değerlendirme cevapları D1:D29’a yazılır; D30 boş kalır.
 
-Organizasyonunda destekleniyorsa **Settings → Pages** içindeki görünürlük ayarını private olarak yapılandır ve erişimi organizasyonun politikalarına göre ver. Bu uygulama kendi kimlik doğrulamasını eklemez. Gerçek private erişim gereken ve bu özelliği olmayan ortamlarda, dosyaları kurum içi erişim kontrollü bir statik sunucuda barındır.
+## Testler
 
-Resmî kaynaklar:
+Değerlendirme şablonları artık yayınlanan varlıklar değildir. Testleri çalıştırmadan önce maildeki boş dosyaları aşağıdaki yerel, Git tarafından yok sayılan konumlara kopyala:
 
-- [GitHub Pages görünürlüğü ve erişim kontrolü](https://docs.github.com/en/enterprise-cloud@latest/pages/getting-started-with-github-pages/changing-the-visibility-of-your-github-pages-site)
-- [GitHub Pages desteği ve planlar](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages)
-
-`noindex` etiketi yalnızca arama motorlarına bir yönergedir; erişim kontrolü sağlamaz.
-
-## Katılımcı akışı
-
-- Ad-soyad ve unvan.
-- İletişim tarzı: 40 soru, 1–5 puan.
-- Davranış tarzı: 28 soru, A/B seçimi.
-- Motivasyon ihtiyacı: 40 soru, 1–4 puan.
-- Kontrol odağı: 29 soru, A/B seçimi. Excel’deki sekme adı `İç-Dış Motivasyon` olarak korunur.
-- Eksikleri kontrol et, Excel’i indir ve yöneticiyle paylaş.
-
-Sorular beşerli sayfalarda gösterilir. Bölümler arasında serbestçe gezinilebilir; eksik cevap varken o sayfadan ileri gitme ve Excel indirme engellenir. Yanıtlar indirmeden önce gözden geçirilebilir.
-
-**Motivasyon bölümünün özgün yönergesi** “Şirketimde birlikte çalıştığım kişiler” şeklindedir. Web arayüzü bu ifadeyi korur; soruları kendi davranışlarına ilişkinmiş gibi yeniden yazmaz. Bu bölümde kaynak yalnızca 1 ve 4 uçlarını tanımlar. Web arayüzünde okunabilirlik için 2 “Nadiren”, 3 “Çoğunlukla” olarak açıklanır; Excel’deki sayısal puanlar ve sorular korunur.
-
-## Veri nerede tutulur?
-
-- Cevaplar, ad-soyad, unvan ve son açık bölüm/sayfa tarayıcının `localStorage` alanında saklanır. Aynı origin (protokol + alan adı + port), cihaz ve tarayıcı profiliyle yeniden açınca devam edilir. Eski `sessionStorage` taslağı, kalıcı kayıt yoksa otomatik taşınır. Farklı cihaz/tarayıcılar arasında senkronizasyon yoktur; gizli mod veya site verilerini silmek kaydı kaldırabilir. Ortak cihazda iş bitince **bilgilerimi temizle** düğmesini kullan. Aynı anda birden fazla sekmede düzenlemede son kayıt geçerlidir.
-- Bilgi ve yanıtları gönderen bir API, e-posta, analitik, haricî font veya CDN çağrısı yoktur. Hosting hizmeti yalnızca sayfanın ve sabit dosyaların normal HTTP isteklerini görür.
-- Excel dosyası tarayıcıda oluşturulur. Dosya kendiliğinden yöneticiye gönderilmez.
-- GitHub’a yalnızca boş Excel şablonu ve uygulama kodu konur. Dolu Excel dosyaları ve `test-output/` depoya eklenmemelidir.
-- Sayfa erişiminin gizliliğini hosting katmanı sağlar. Yanıtların sunucuya gönderilmemesi, sayfanın özel erişimle korunduğu anlamına gelmez.
-
-## Excel çıktısı
-
-`assets/envanter-sablonu.xlsx`, paylaşılan `Envanterler-Uygulama Dosyası.xlsx` dosyasının aynısıdır. Uygulama dosyayı sıfırdan oluşturmak yerine ZIP/OOXML paketindeki gerekli alanları günceller:
-
-- Dokuz sekme, soru metinleri, stiller, görseller, yazdırma alanları ve **143 özgün formül** korunur.
-- Cevaplar soru sekmelerine ve değerlendirme sekmelerindeki ilgili giriş hücrelerine aktarılır. Değerlendirme için A → 1, B → 2 dönüşümü yapılır.
-- Formül sonuçları önceden hesaplanıp hücre önbelleklerine yazılır. Excel’de otomatik yeniden hesaplama da açık tutulur.
-- Giriş sayfasındaki özgün ad-soyad/unvan metin kutusu doldurulur.
-- İletişim grafiğinin sayı önbelleği, davranış haritasındaki dikdörtgen ve kontrol odağı göstergesinin konumu sonuçlara göre güncellenir. Haritalar kaynak şablondaki eksenlere göre konumlandırılır; arayüz kişilik veya psikolojik değerlendirme üretmez.
-- Dosya adı `RiseUp-Ad-Soyad-YYYY-MM-DD.xlsx` biçimindedir; tarih İstanbul saat dilimiyle oluşturulur.
-
-Formüller, şablonda kullanılan `SUM`, `IF` ve doğrudan hücre başvuruları için sınırlı bir hesaplayıcıyla değerlendirilir. Desteklenmeyen formül sessizce sıfıra dönüştürülmez; dışa aktarma hata verir. Kontrol odağı toplamına dahil olan beş özgün boş hücre Excel’in `SUM` davranışı gibi sıfır sayılır, ancak dosyada boş kalır.
-
-Şablonu değiştirirsen `data/survey.json` içindeki hücre eşlemelerini, formülleri ve harita koordinatlarını da yeni şablona göre güncelle. Değişiklikten sonra testleri yeniden çalıştır.
-
-## Doğrulama
+- `private-fixtures/envanter-sablonu.xlsx`: Envanterler-Uygulama Dosyası.xlsx
+- `private-fixtures/ekip-sablonu.xlsx`: EkipAnalizi.xlsx
 
 ```sh
 npm test
-# Ek bağımsız kontrol için openpyxl bulunan Python ortamı:
+# openpyxl bulunan Python ortamıyla bağımsız doğrulama:
 python3 tests/verify_export.py
 ```
 
-Node testleri üç sentetik örneği `test-output/` içine üretir. Python kontrolü bunları salt okunur açarak tüm cevapları, formüllerin korunmasını, bağımsız puanlama anahtarlarını, kimlik alanını ve grafik önbelleğini doğrular. Soru metinlerini de şablonla karşılaştırır. Değişmemesi gereken ZIP girdileri bayt düzeyinde karşılaştırılır.
+Testler; cevap dosyasında değerlendirme bulunmamasını, 137 cevabın aktarımını, yeni/eski dosyaların okunmasını, özgün değerlendirmeye dönüşümü, geçersiz dosyaların reddini, tüm ekip sütunlarını, 1/10/11/25 kişilik ekipleri, ortalamaları, ayrı yönetici profilini ve yinelenen kayıtları kontrol eder. Python kontrolü Excel’leri bağımsız olarak okuyup puanları, hücreleri, formülleri, birleşimleri ve XML’i doğrular. Sentetik çıktılar `test-output/` altında kalır.
 
-Bu kontroller Microsoft Excel veya Numbers içinde canlı görüntüleme doğrulamasının yerine geçmez. Özellikle Office sürümleri arasındaki şekil yerleşimi farkları için ilk gerçek kullanımda bir örnek dosyayı Excel’de açıp kontrol etmek yararlıdır.
+Gerçek tarayıcı ve Microsoft Excel uygulamasıyla görsel kontroller otomatik dosya doğrulamalarından ayrıdır. Yerel önizleme ortamda engellenirse bu doğrulamalar tamamlanmış sayılmaz.
 
-Bu teslim hazırlanırken yerel sunucu başlatma ortam tarafından `EPERM` ile engellendiği için gerçek tarayıcı üzerinden görsel ve etkileşim doğrulaması yapılamadı. JavaScript sözdizimi, soru eşlemeleri ve gerçek Excel üretimi otomatik kontrollerle doğrulandı.
-
-## Dosyalar
-
-- `index.html`, `styles.css`, `app.js`: responsive, klavye ile kullanılabilen Türkçe arayüz.
-- `core.js`: doğrulama, taslak geri yükleme ve özgün formüllerin hesaplanması.
-- `excel.js`: orijinal şablondan Excel üretimi.
-- `data/survey.json`: kaynak sorular, hücre eşlemeleri ve formüller.
-- `vendor/`: sabit sürüm JSZip 3.10.1 ve lisansları; dış bağlantı gerektirmez.
-- `tests/`: kaynak sadakati, değerlendirme ve dışa aktarma kontrolleri.
-- `tools/serve.mjs`: sadece yerel önizleme sunucusu. Yayında çalıştırılmaz.
+`tools/build-answer-template.mjs`, geliştirme ortamında `@oai/artifact-tool` ile boş cevap şablonunu yeniden üretir; site çalışırken bu bağımlılık kullanılmaz. Soruların yapısı değişirse şablon da yeniden üretilmelidir.

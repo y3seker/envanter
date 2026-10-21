@@ -171,3 +171,27 @@ body {
   .bar-value { transform-origin: left; animation: reveal-score .6s ease-out both; }
   @keyframes reveal-score { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 }
+
+.analysis-main { max-width: 1180px; margin: auto; padding: 42px 32px; }
+.analysis-intro h1 { font-size: clamp(30px, 4vw, 46px); margin-top: 14px; }
+.analysis-intro p { max-width: 720px; color: #596b5e; font-size: 16px; }
+.analysis-main .profile-panel { margin-bottom: 24px; }
+.analysis-main input[type=file] { font-size: 14px; padding: 12px; }
+.analysis-main input[type=file]::file-selector-button { border: 0; border-radius: 6px; background: #e8efe7; color: #304d3f; padding: 8px 12px; margin-right: 10px; cursor: pointer; }
+.analysis-note { font-size: 14px; color: #596b5e; line-height: 1.7; }
+.analysis-actions, .table-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.analysis-table-wrap { overflow-x: auto; margin-top: 20px; }
+.analysis-table { border-collapse: collapse; width: 100%; text-align: left; font-size: 14px; }
+.analysis-table th, .analysis-table td { padding: 14px 12px; border-bottom: 1px solid var(--line); }
+.analysis-table th { color: #596b5e; font-weight: 600; background: #f5f7f1; }
+.analysis-table td small { display: block; margin-top: 4px; color: #596b5e; overflow-wrap: anywhere; }
+.analysis-table select, .analysis-table input { border: 1px solid var(--line); border-radius: 7px; padding: 9px; background: white; font: inherit; max-width: 200px; }
+.analysis-table td:first-child { min-width: 200px; }
+#import-errors { white-space: pre-line; }
+.team-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+.team-metrics div { padding: 18px; background: #f0f4eb; border-radius: 12px; }
+.team-metrics span { font-size: 13px; color: #596b5e; display: block; }
+.team-metrics strong { font-size: 24px; display: block; margin-top: 8px; }
+.team-map { width: 100%; max-width: 720px; display: block; margin: auto; font-family: inherit; font-size: 14px; }
+.map-legend { columns: 2; font-size: 14px; line-height: 1.8; }
+@media(max-width:760px) { .analysis-main { padding: 28px 18px; } .team-metrics { grid-template-columns: 1fr; } .map-legend { columns: 1; } }

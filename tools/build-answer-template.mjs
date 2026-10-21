@@ -1,0 +1,33 @@
+import fs from 'node:fs/promises';
+import { Workbook, SpreadsheetFile } from '@oai/artifact-tool';
+const root = new URL('../', import.meta.url);
+const survey = JSON.parse(await fs.readFile(new URL('data/survey.json', root), 'utf8'));
+const wb = Workbook.create();
+const identity = wb.worksheets.add('Katılımcı');
+identity.getRange('A1:B5').values = [['Envanter cevapları', ''], ['Ad Soyad', ''], ['Unvan', ''], ['Format', 'envanter-answers-v1'], ['Bilgi', 'Bu dosya yalnızca kimlik bilgilerini ve cevapları içerir.']];
+identity.getRange('A1:B5').format.font = {name:'Arial',size:11};
+identity.getRange('A1:B1').format.font = {name:'Arial',size:15,bold:true};
+identity.getRange('A1:A5').format.columnWidth = 24;
+identity.getRange('B1:B5').format.columnWidth = 75;
+identity.getRange('A1:B5').format.rowHeight = 26;
+identity.showGridLines=false;
+for (const section of survey.sections) {
+ const sheet = wb.worksheets.add(section.sheetName);
+ const choice = section.kind==='choice';
+ const rows = [['Soru No', 'İfade / A seçeneği', 'B seçeneği', 'Cevabım'], ...section.questions.map(q => [q.number, choice?q.options[0]:q.text, choice?q.options[1]:'', ''])];
+ const range=sheet.getRange(`A1:D${rows.length}`);range.values=rows;
+ range.format.font={name:'Arial',size:11};range.format.wrapText=true;range.format.verticalAlignment='center';range.format.rowHeight=62;
+ sheet.getRange('A1:D1').format={fill:'#304d3f',font:{name:'Arial',size:11,bold:true,color:'#ffffff'},rowHeight:26};
+ sheet.getRange(`A1:A${rows.length}`).format.columnWidth=10;
+ sheet.getRange(`B1:C${rows.length}`).format.columnWidth=64;
+ sheet.getRange(`D1:D${rows.length}`).format.columnWidth=14;
+ sheet.getRange(`D2:D${rows.length}`).format.fill='#fff3d5';
+ sheet.getRange(`D2:D${rows.length}`).dataValidation={rule:{type:'list',values:choice?['A','B']:Array.from({length:section.max},(_,i)=>String(i+1))}};
+ sheet.freezePanes.freezeRows(1);sheet.showGridLines=false;
+}
+wb.recalculate();
+await fs.mkdir(new URL('test-output/', root),{recursive:true});
+const preview=await wb.render({sheetName:survey.sections[1].sheetName,range:'A1:D5',scale:1,format:'png'});
+await fs.writeFile(new URL('test-output/answer-template.png',root),new Uint8Array(await preview.arrayBuffer()));
+await (await SpreadsheetFile.exportXlsx(wb)).save(new URL('assets/cevap-sablonu.xlsx',root).pathname);
+console.log('Answer-only template created');

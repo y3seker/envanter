@@ -5,6 +5,12 @@ const escapeXml = value => String(value).replace(/&/g, '&amp;').replace(/</g, '&
 // Patch the known template's XML instead of rewriting it with a spreadsheet
 // library. This preserves drawings, styles, print areas, formulas and media.
 export function setCell(xml, ref, value, formula = null) {
+  // Artifact/Office writers may prefix the spreadsheet namespace.
+  const prefix = /<(\w+):worksheet\b/.exec(xml)?.[1];
+  if (prefix) {
+    xml = xml.replace(new RegExp(`(<\\/?){1}${prefix}:`, 'g'), '$1');
+    xml = xml.replace('<worksheet ', '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" ');
+  }
   const pattern = new RegExp(`<c\\b([^>]*\\br="${ref}"[^>]*?)(?:\\/>|>[\\s\\S]*?<\\/c>)`);
   const existing = pattern.exec(xml);
   const attributes = existing ? existing[1].replace(/\s+t="[^"]*"/g, '').replace(/\/$/, '') : ` r="${ref}"`;

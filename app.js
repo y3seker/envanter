@@ -1,6 +1,5 @@
 import { PAGE_SIZE, emptyState, restoreState, validAnswer, profileIsValid, answeredCount, totalAnswered, missingQuestions } from './core.js';
-import { createWorkbook } from './excel.js';
-import { resultsHtml } from './results.js';
+import { createAnswerWorkbook } from './answers.js';
 import { saveDraft, loadDraft, clearDraft } from './storage.js';
 
 const content = document.querySelector('#content');
@@ -56,7 +55,7 @@ function questionnaire() {
 
 function review() {
   const complete = progress() === survey.totalQuestions && profileIsValid(state.profile);
-  content.innerHTML = `${header('SON ADIM · GÖZDEN GEÇİR')}<section class="review-header"><span class="eyebrow">${complete ? 'KENDİN İÇİN GÜZEL BİR ADIM ATTIN' : 'BİTİRMEYE BİRKAÇ ADIM KALDI'}</span><h1>${complete ? 'Tamamlandı.<br>Şimdi sıra paylaşmakta.' : 'Son bir kontrol yapalım.'}</h1><p>${complete ? 'Yanıtların hazır. Excel dosyanı indir ve yöneticinle paylaş. Dosyan, orijinal envanter şablonunda hazırlanacak.' : 'Aşağıdaki bölümlerden eksik bilgilerini tamamlayabilirsin. Excel’ini tüm soruları cevapladıktan sonra indirebilirsin.'}</p></section><div class="review-identity"><div><strong>${escape(state.profile.name.trim() || 'Ad-soyad eksik')}</strong><span>${escape(state.profile.title.trim() || 'Unvan eksik')}</span></div><button type="button" class="text-button" data-step="0">Bilgilerimi düzenle</button></div><div class="review-grid">${survey.sections.map((s, i) => { const count = answeredCount(s, state); return `<section class="review-item"><div class="review-item-header"><h2>${s.title}</h2><span class="count-pill ${count === s.count ? '' : 'missing'}">${count === s.count ? '✓ ' : ''}${count} / ${s.count}</span></div><button class="text-button" type="button" data-review="${i}">${count === s.count ? 'Yanıtları gözden geçir' : `${s.count - count} eksik yanıtı tamamla`}<span aria-hidden="true"> ↗</span></button></section>`; }).join('')}</div>${complete ? resultsHtml(survey, state) : '<p class="results-pending">Grafiklerin, tüm soruları ve kişisel bilgilerini tamamladığında burada görünecek.</p>'}<section class="download-card"><div><h2>Yanıtların tek bir Excel dosyasında.</h2><p>Değerlendirme sekmeleri de otomatik doldurulur.<br>İndirdiğin .xlsx dosyasını yöneticine iletmen yeterli.</p></div><button class="button primary" id="download-button" type="button">Excel dosyamı indir<span class="arrow" aria-hidden="true">↓</span></button></section><div id="download-error" class="error-message" role="alert"></div><div id="download-success" ${state.downloaded ? '' : 'hidden'} class="download-success" role="status">Dosyan hazırlandı ve indirme başlatıldı. İndirmeler klasörünü kontrol edip Excel dosyanı yöneticinle paylaşabilirsin.<br><button class="text-button" id="finish-button" type="button">Bu tarayıcıdaki bilgilerimi temizle</button></div><div class="download-steps"><span><b>1</b> Excel dosyanı indir</span><span><b>2</b> İndirdiğin dosyayı kontrol et</span><span><b>3</b> Yöneticinle paylaş</span></div>`;
+  content.innerHTML = `${header('SON ADIM · GÖZDEN GEÇİR')}<section class="review-header"><span class="eyebrow">${complete ? 'KENDİN İÇİN GÜZEL BİR ADIM ATTIN' : 'BİTİRMEYE BİRKAÇ ADIM KALDI'}</span><h1>${complete ? 'Tamamlandı.<br>Şimdi sıra paylaşmakta.' : 'Son bir kontrol yapalım.'}</h1><p>${complete ? 'Yanıtların hazır. Excel dosyanı indir ve yöneticinle paylaş. Dosyan yalnızca kimlik bilgilerini ve cevaplarını içerecek.' : 'Aşağıdaki bölümlerden eksik bilgilerini tamamlayabilirsin. Excel’ini tüm soruları cevapladıktan sonra indirebilirsin.'}</p></section><div class="review-identity"><div><strong>${escape(state.profile.name.trim() || 'Ad-soyad eksik')}</strong><span>${escape(state.profile.title.trim() || 'Unvan eksik')}</span></div><button type="button" class="text-button" data-step="0">Bilgilerimi düzenle</button></div><div class="review-grid">${survey.sections.map((s, i) => { const count = answeredCount(s, state); return `<section class="review-item"><div class="review-item-header"><h2>${s.title}</h2><span class="count-pill ${count === s.count ? '' : 'missing'}">${count === s.count ? '✓ ' : ''}${count} / ${s.count}</span></div><button class="text-button" type="button" data-review="${i}">${count === s.count ? 'Yanıtları gözden geçir' : `${s.count - count} eksik yanıtı tamamla`}<span aria-hidden="true"> ↗</span></button></section>`; }).join('')}</div><section class="download-card"><div><h2>Yanıtların tek bir Excel dosyasında.</h2><p>Dosya yalnızca kimlik bilgilerini ve cevaplarını içerir.<br>İndirdiğin .xlsx dosyasını yöneticine iletmen yeterli.</p></div><button class="button primary" id="download-button" type="button">Excel dosyamı indir<span class="arrow" aria-hidden="true">↓</span></button></section><div id="download-error" class="error-message" role="alert"></div><div id="download-success" ${state.downloaded ? '' : 'hidden'} class="download-success" role="status">Dosyan hazırlandı ve indirme başlatıldı. İndirmeler klasörünü kontrol edip Excel dosyanı yöneticinle paylaşabilirsin.<br><button class="text-button" id="finish-button" type="button">Bu tarayıcıdaki bilgilerimi temizle</button></div><div class="download-steps"><span><b>1</b> Excel dosyanı indir</span><span><b>2</b> İndirdiğin dosyayı kontrol et</span><span><b>3</b> Yöneticinle paylaş</span></div>`;
 }
 
 function render({ focus = false } = {}) {
@@ -90,7 +89,7 @@ function showQuestionError(questions) {
 }
 
 function templateBytes() {
-  if (!activeTemplateRequest) activeTemplateRequest = fetch('./assets/envanter-sablonu.xlsx').then(r => {
+  if (!activeTemplateRequest) activeTemplateRequest = fetch('./assets/cevap-sablonu.xlsx').then(r => {
     if (!r.ok) throw new Error('Excel şablonuna ulaşılamadı. İnternet bağlantını kontrol edip tekrar dene.');
     return r.arrayBuffer();
   }).catch(e => { activeTemplateRequest = null; throw e; });
@@ -105,7 +104,7 @@ async function download() {
   button.disabled = true; button.textContent = 'Excel’in hazırlanıyor…'; error.textContent = '';
   try {
     const snapshot = structuredClone(state);
-    const result = await createWorkbook(survey, snapshot, await templateBytes());
+    const result = await createAnswerWorkbook(survey, snapshot, await templateBytes());
     if (downloadedUrl) URL.revokeObjectURL(downloadedUrl);
     downloadedUrl = URL.createObjectURL(new Blob([result.bytes], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
     const link = document.createElement('a'); link.href = downloadedUrl; link.download = result.filename;
