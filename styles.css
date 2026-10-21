@@ -6,4 +6,127 @@
 @media(max-width:760px){.site-header{height:76px;padding:0 22px;gap:10px}.brand{font-size:29px}.brand-mark{width:31px;height:31px;font-size:23px;border-radius:9px}.header-label{display:none}.privacy-chip{font-size:9px;padding:8px 10px}.app-shell{display:block;padding:24px 20px 20px;min-height:calc(100vh - 130px)}.sidebar{position:static;margin-bottom:24px}.sidebar-heading,.sidebar-note,.reset-button,.step-detail,.step-name,.step-arrow,.overall-progress{display:none}.step-list{display:flex;justify-content:space-between;position:relative;gap:5px}.step-list:before{content:"";position:absolute;top:22px;left:8%;right:8%;height:1px;background:#dae1d1;z-index:-1}.step-button{justify-content:center;padding:4px;border:0;border-radius:50%;width:40px;height:40px}.step-button[aria-current=step]{background:transparent;box-shadow:none}.step-index{width:30px;height:30px;background:#f5f5f0}.mobile-progress{display:flex;justify-content:space-between;margin:12px 4px 0;font-size:10px;color:#7b8872}.mobile-progress strong{color:#435c39;font-weight:500}.content-header{margin-bottom:16px}.saved-label{font-size:9px}.eyebrow{font-size:8px;letter-spacing:1.3px}.welcome-main{padding:27px 24px 24px;grid-template-columns:1fr;position:relative}.welcome-main h1{font-size:37px;max-width:270px;position:relative;z-index:1}.welcome-main p{font-size:12px;position:relative;z-index:1}.growth-art{position:absolute;right:-40px;top:12px;transform:scale(.6);transform-origin:top right;opacity:.32}.welcome-main .eyebrow{max-width:210px}.welcome-facts{padding:18px 24px;gap:10px}.fact b{font-size:10px}.fact small{font-size:8px;line-height:1.6}.profile-panel{padding:24px;margin-top:18px}.profile-fields{grid-template-columns:1fr;gap:18px}.field input{font-size:16px;padding:13px}.privacy-note{font-size:10px;padding:13px}.bottom-actions{align-items:stretch;flex-direction:column;gap:13px}.bottom-help{order:2;text-align:center}.bottom-actions .button{width:100%;justify-content:space-between}.survey-title h1{font-size:29px}.survey-description{font-size:14px}.scale-guide{font-size:12px;padding:12px;gap:10px}.question-card{padding:18px 16px}.question-card legend{font-size:16px;gap:9px;margin-bottom:16px}.question-number{width:23px;min-width:23px;height:23px;font-size:9px}.answer-label{min-height:59px;padding:8px 2px;gap:5px}.answer-value{font-size:17px}.answer-caption{font-size:11px;line-height:1.4}.choice .answer-label{padding:12px;gap:10px}.option-text{font-size:15px}.page-navigation{align-items:stretch;flex-direction:column;gap:14px;margin-top:18px;padding-top:17px}.page-caption{text-align:center;font-size:9px}.page-controls{justify-content:space-between}.page-controls .button{flex:1;padding:12px 14px;font-size:11px;gap:8px}.site-footer{padding:14px 20px 22px;font-size:8px;gap:10px}.review-header{padding:26px}.review-header h1{font-size:29px}.review-grid{gap:10px}.review-item{padding:18px}.review-identity{margin:18px 0}.review-identity strong{font-size:12px}.download-card{padding:22px}.download-card .button{width:100%}.download-steps{flex-direction:column;gap:12px}.dialog-actions .button{padding:13px}.section-progress{margin-bottom:18px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
 
-@media(max-width:1100px){.answers:not(.choice){grid-template-columns:repeat(2,minmax(0,1fr))}.answers:not(.choice):not(.four) .answer-label:last-child{grid-column:1 / -1}.answer-caption{font-size:12px}.answer-label{min-height:68px}.answers.choice{grid-template-columns:1fr}}
+
+/* Readable type with compact, wrapping controls. */
+.step-name, .field label, .fact b { font-size: 14px; }
+.step-detail, .sidebar-note p, .text-button, .saved-label,
+.panel-title small, .form-hint, .privacy-note, .bottom-help,
+.section-progress span, .scale-guide, .page-caption, .count-pill,
+.review-item .text-button, .review-identity span, .download-steps,
+.mobile-progress { font-size: 13px; }
+.eyebrow, .header-label, .privacy-chip, .fact small,
+.overall-progress p, .site-footer { font-size: 12px; }
+.welcome-main p, .survey-description, .review-header p,
+.download-card p, .dialog-content p, .download-success,
+.error-message { font-size: 15px; }
+.field input, .review-identity strong, .review-item h2 { font-size: 16px; }
+.panel-title h2, .download-card h2 { font-size: 19px; }
+.step-detail, .sidebar-note p, .saved-label, .fact small,
+.panel-title small, .form-hint, .bottom-help, .page-caption,
+.review-identity span, .download-card p, .site-footer,
+.overall-progress p, .download-steps { color: #596b5e; }
+.step-button { padding: 10px; gap: 10px; }
+.step-detail { margin-top: 3px; line-height: 1.45; }
+.question-card legend { font-size: 18px; line-height: 1.6; margin-bottom: 14px; }
+.question-number { font-size: 12px; margin-top: 2px; }
+.answers:not(.choice) { display: flex; flex-wrap: wrap; gap: 8px; }
+.answers:not(.choice) .answer-label {
+  flex-direction: row;
+  flex: 0 1 auto;
+  min-height: 44px;
+  padding: 8px 12px;
+  gap: 8px;
+}
+.answer-value { font-size: 16px; }
+.answer-caption { font-size: 13px; line-height: 1.4; color: #53664b; }
+.choice .answer-label { min-height: 44px; padding: 10px 12px; gap: 10px; }
+.option-text { font-size: 16px; line-height: 1.6; }
+.option-letter { font-size: 12px; }
+.button, .page-controls .button, .dialog-actions .button {
+  min-height: 44px;
+  padding: 9px 14px;
+  gap: 8px;
+  font-size: 14px;
+}
+.review-item-header { flex-wrap: wrap; }
+.welcome-facts { gap: 16px; }
+.fact { align-items: flex-start; }
+.fact small { line-height: 1.5; }
+@media (max-width: 760px) {
+  .question-card legend { font-size: 17px; }
+  .welcome-facts { grid-template-columns: 1fr; gap: 12px; }
+  .fact small { margin-top: 2px; }
+  .content-header { flex-wrap: wrap; gap: 8px; }
+  .scale-guide { flex-wrap: wrap; }
+  .bottom-actions { align-items: flex-start; }
+  .bottom-actions .button, .download-card .button { width: auto; max-width: 100%; }
+  .bottom-help { text-align: left; }
+  .page-controls { flex-wrap: wrap; }
+  .page-controls .button { flex: 0 1 auto; }
+  .download-card .button { white-space: normal; }
+  .site-footer { flex-wrap: wrap; }
+  .panel-title { flex-wrap: wrap; }
+}
+
+/* Warm accents and brief motion keep the questionnaire lively without looping. */
+body {
+  background: radial-gradient(ellipse at 95% 0%, #f8dfcf80, transparent 40%),
+    radial-gradient(ellipse at 0% 65%, #dcebd580, transparent 35%), #f5f5f0;
+}
+.hero-card { background: linear-gradient(125deg, #fff 40%, #fff4e9); }
+.review-header { background: linear-gradient(120deg, #e6eddf, #f4eedb); }
+.progress-fill { background: linear-gradient(90deg, #487153, #8aa65c); transition: width .4s ease-out; }
+.question-card { transition: border-color .2s, box-shadow .2s; }
+.question-card:has(input:checked):not(.invalid) { border-color: #b8cbb0; }
+.question-card:focus-within { box-shadow: 0 4px 20px #304d3f0b; }
+.button { transition: transform .18s, box-shadow .18s, background .18s; }
+.button .arrow { transition: transform .18s; }
+.answer-label { transition: background .18s, border-color .18s, box-shadow .18s; }
+@media (hover: hover) {
+  .button:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 5px 14px #304d3f20; }
+  .button:not(:disabled):hover .arrow { transform: translateY(-2px); }
+}
+.button:not(:disabled):active { transform: translateY(0) scale(.98); }
+@media (prefers-reduced-motion: no-preference) {
+  .hero-card, .profile-panel, .survey-title, .review-header, .review-identity,
+  .download-card, .download-success:not([hidden]), .question-card, .review-item {
+    animation: rise-in .38s ease-out both;
+  }
+  .question-card:nth-child(2), .review-item:nth-child(2) { animation-delay: 40ms; }
+  .question-card:nth-child(3), .review-item:nth-child(3) { animation-delay: 80ms; }
+  .question-card:nth-child(4), .review-item:nth-child(4) { animation-delay: 120ms; }
+  .question-card:nth-child(5) { animation-delay: 160ms; }
+  .answer-label:has(input:checked) .answer-value,
+  .answer-label:has(input:checked) .option-letter { animation: selection-pop .24s ease-out; }
+  .art-step { transform-origin: bottom; animation: grow-step .8s ease-out both; }
+  .art-step.s2 { animation-delay: .12s; }
+  .art-step.s3 { animation-delay: .24s; }
+  .art-spark { animation: spark-turn 1.2s ease-out both; }
+  #download-button:disabled::before {
+    content: ''; width: 14px; height: 14px; flex-shrink: 0;
+    border: 2px solid #ffffff50; border-top-color: white; border-radius: 50%;
+    animation: spin .8s linear infinite;
+  }
+}
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes selection-pop {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.13); }
+}
+@keyframes grow-step {
+  from { transform: skewY(-8deg) scaleY(.15); opacity: 0; }
+  to { transform: skewY(-8deg) scaleY(1); opacity: 1; }
+}
+@keyframes spark-turn {
+  from { transform: rotate(-70deg) scale(.5); opacity: 0; }
+  to { transform: rotate(0) scale(1); opacity: 1; }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .button:not(:disabled):hover, .button:not(:disabled):active,
+  .button:not(:disabled):hover .arrow { transform: none; }
+}
