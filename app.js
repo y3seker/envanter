@@ -62,7 +62,7 @@ function review() {
 function render({ focus = false } = {}) {
   renderNav();
   if (state.step === 0) welcome(); else if (state.step === 5) review(); else questionnaire();
-  document.title = `${stepName()} · Rise Up`;
+  document.title = `${stepName()} · Envanter`;
   if (focus) {
     main.focus({ preventScroll: true });
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
