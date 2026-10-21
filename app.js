@@ -1,5 +1,7 @@
-import { PAGE_SIZE, DRAFT_KEY, emptyState, restoreState, validAnswer, profileIsValid, answeredCount, totalAnswered, missingQuestions } from './core.js';
+import { PAGE_SIZE, emptyState, restoreState, validAnswer, profileIsValid, answeredCount, totalAnswered, missingQuestions } from './core.js';
 import { createWorkbook } from './excel.js';
+import { resultsHtml } from './results.js';
+import { saveDraft, loadDraft, clearDraft } from './storage.js';
 
 const content = document.querySelector('#content');
 const nav = document.querySelector('#step-nav');
@@ -10,10 +12,9 @@ let survey, state, storageAvailable = true, downloadedUrl;
 let activeTemplateRequest;
 
 function save() {
-  try { sessionStorage.setItem(DRAFT_KEY, JSON.stringify(state)); }
-  catch { storageAvailable = false; }
+  storageAvailable = saveDraft(state);
   const label = document.querySelector('#saved-label');
-  if (label) label.textContent = storageAvailable ? 'Bu sekmede kaydedildi' : 'Yenilemeden tamamla';
+  if (label) label.textContent = storageAvailable ? 'Bu tarayıcıda kaydedildi' : 'Kayıt yapılamıyor · sayfayı kapatma';
 }
 
 function status(message) { live.textContent = message; }
@@ -28,11 +29,11 @@ function renderNav() {
 }
 
 function header(label) {
-  return `<div class="content-header"><span class="eyebrow">${label}</span><span class="saved-label"><span class="status-dot"></span><span id="saved-label">${storageAvailable ? 'Bu sekmede kaydedildi' : 'Yenilemeden tamamla'}</span></span></div>`;
+  return `<div class="content-header"><span class="eyebrow">${label}</span><span class="saved-label"><span class="status-dot"></span><span id="saved-label">${storageAvailable ? 'Bu tarayıcıda kaydedildi' : 'Kayıt yapılamıyor · sayfayı kapatma'}</span></span></div>`;
 }
 
 function welcome() {
-  content.innerHTML = `${header('EKİP ENVANTERLERİ')}<section class="hero-card" aria-labelledby="welcome-title"><div class="welcome-main"><div><span class="eyebrow">KENDİNİ TANI. BİRLİKTE GELİŞ.</span><h1 id="welcome-title">Her güçlü ekip,<br>birbirini tanıyarak<br>başlar.</h1><p>Çalışma tarzını, iletişimini ve seni harekete geçirenleri keşfet. Dört kısa envanterle ekibinin gelişimine katkıda bulun.</p></div><div class="growth-art" aria-hidden="true"><div class="art-disc"></div><div class="art-orbit"></div><div class="art-orbit second"></div><div class="art-step s1"></div><div class="art-step s2"></div><div class="art-step s3"></div><span class="art-spark">✳</span><span class="art-caption">BİRLİKTE DAHA İLERİ</span></div></div><div class="welcome-facts"><div class="fact"><span class="fact-icon" aria-hidden="true">◷</span><span><b>Kendi hızında</b><small>Ara verip devam edebilirsin</small></span></div><div class="fact"><span class="fact-icon" aria-hidden="true">▤</span><span><b>4 envanter · 137 soru</b><small>Adım adım ilerle</small></span></div><div class="fact"><span class="fact-icon" aria-hidden="true">↧</span><span><b>Sonunda Excel’ini indir</b><small>Yöneticinle kendin paylaş</small></span></div></div></section><form id="profile-form" novalidate><section class="profile-panel"><div class="panel-title"><h2>Önce seni tanıyalım</h2><small>İki alan da gerekli</small></div><div class="profile-fields"><div class="field"><label for="full-name">Adın ve soyadın</label><input id="full-name" name="name" autocomplete="name" placeholder="Ad Soyad" required minlength="2" maxlength="80" value="${escape(state.profile.name)}"></div><div class="field"><label for="job-title">Unvanın</label><input id="job-title" name="title" autocomplete="organization-title" placeholder="Örn. Yazılım Geliştirici" required minlength="2" maxlength="100" value="${escape(state.profile.title)}"></div></div><p class="form-hint">Bu bilgiler, indireceğin Excel dosyasında yer alacak.</p><div id="profile-error" class="error-message" role="alert"></div></section><div class="privacy-note"><span class="lock" aria-hidden="true">◇</span><span>Bu bir performans değerlendirmesi değil. Yanıtların bu sekmede tutulur ve sunucuya gönderilmez. Son adımda dosyanı indirip yöneticinle sen paylaşacaksın.</span></div><div class="bottom-actions"><p class="bottom-help">Kendini olduğun gibi yansıtman yeterli.</p><button type="submit" class="button primary">${progress() ? 'Kaldığım yerden devam et' : 'Hadi başlayalım'}<span class="arrow" aria-hidden="true">↗</span></button></div></form>`;
+  content.innerHTML = `${header('EKİP ENVANTERLERİ')}<section class="hero-card" aria-labelledby="welcome-title"><div class="welcome-main"><div><span class="eyebrow">KENDİNİ TANI. BİRLİKTE GELİŞ.</span><h1 id="welcome-title">Her güçlü ekip,<br>birbirini tanıyarak<br>başlar.</h1><p>Çalışma tarzını, iletişimini ve seni harekete geçirenleri keşfet. Dört kısa envanterle ekibinin gelişimine katkıda bulun.</p></div><div class="growth-art" aria-hidden="true"><div class="art-disc"></div><div class="art-orbit"></div><div class="art-orbit second"></div><div class="art-step s1"></div><div class="art-step s2"></div><div class="art-step s3"></div><span class="art-spark">✳</span><span class="art-caption">BİRLİKTE DAHA İLERİ</span></div></div><div class="welcome-facts"><div class="fact"><span class="fact-icon" aria-hidden="true">◷</span><span><b>Kendi hızında</b><small>Ara verip devam edebilirsin</small></span></div><div class="fact"><span class="fact-icon" aria-hidden="true">▤</span><span><b>4 envanter · 137 soru</b><small>Adım adım ilerle</small></span></div><div class="fact"><span class="fact-icon" aria-hidden="true">↧</span><span><b>Sonunda Excel’ini indir</b><small>Yöneticinle kendin paylaş</small></span></div></div></section><form id="profile-form" novalidate><section class="profile-panel"><div class="panel-title"><h2>Önce seni tanıyalım</h2><small>İki alan da gerekli</small></div><div class="profile-fields"><div class="field"><label for="full-name">Adın ve soyadın</label><input id="full-name" name="name" autocomplete="name" placeholder="Ad Soyad" required minlength="2" maxlength="80" value="${escape(state.profile.name)}"></div><div class="field"><label for="job-title">Unvanın</label><input id="job-title" name="title" autocomplete="organization-title" placeholder="Örn. Yazılım Geliştirici" required minlength="2" maxlength="100" value="${escape(state.profile.title)}"></div></div><p class="form-hint">Bu bilgiler, indireceğin Excel dosyasında yer alacak.</p><div id="profile-error" class="error-message" role="alert"></div></section><div class="privacy-note"><span class="lock" aria-hidden="true">◇</span><span>Bu bir performans değerlendirmesi değil. Yanıtların bu tarayıcıda saklanır ve sunucuya gönderilmez. Tarayıcıyı kapatıp aynı cihaz ve tarayıcıyla geri geldiğinde kaldığın yerden devam edebilirsin. Son adımda dosyanı indirip yöneticinle sen paylaşacaksın.</span></div><div class="bottom-actions"><p class="bottom-help">Kendini olduğun gibi yansıtman yeterli.</p><button type="submit" class="button primary">${progress() ? 'Kaldığım yerden devam et' : 'Hadi başlayalım'}<span class="arrow" aria-hidden="true">↗</span></button></div></form>`;
 }
 
 function questionHtml(section, q) {
@@ -55,7 +56,7 @@ function questionnaire() {
 
 function review() {
   const complete = progress() === survey.totalQuestions && profileIsValid(state.profile);
-  content.innerHTML = `${header('SON ADIM · GÖZDEN GEÇİR')}<section class="review-header"><span class="eyebrow">${complete ? 'KENDİN İÇİN GÜZEL BİR ADIM ATTIN' : 'BİTİRMEYE BİRKAÇ ADIM KALDI'}</span><h1>${complete ? 'Tamamlandı.<br>Şimdi sıra paylaşmakta.' : 'Son bir kontrol yapalım.'}</h1><p>${complete ? 'Yanıtların hazır. Excel dosyanı indir ve yöneticinle paylaş. Dosyan, orijinal envanter şablonunda hazırlanacak.' : 'Aşağıdaki bölümlerden eksik bilgilerini tamamlayabilirsin. Excel’ini tüm soruları cevapladıktan sonra indirebilirsin.'}</p></section><div class="review-identity"><div><strong>${escape(state.profile.name.trim() || 'Ad-soyad eksik')}</strong><span>${escape(state.profile.title.trim() || 'Unvan eksik')}</span></div><button type="button" class="text-button" data-step="0">Bilgilerimi düzenle</button></div><div class="review-grid">${survey.sections.map((s, i) => { const count = answeredCount(s, state); return `<section class="review-item"><div class="review-item-header"><h2>${s.title}</h2><span class="count-pill ${count === s.count ? '' : 'missing'}">${count === s.count ? '✓ ' : ''}${count} / ${s.count}</span></div><button class="text-button" type="button" data-review="${i}">${count === s.count ? 'Yanıtları gözden geçir' : `${s.count - count} eksik yanıtı tamamla`}<span aria-hidden="true"> ↗</span></button></section>`; }).join('')}</div><section class="download-card"><div><h2>Yanıtların tek bir Excel dosyasında.</h2><p>Değerlendirme sekmeleri de otomatik doldurulur.<br>İndirdiğin .xlsx dosyasını yöneticine iletmen yeterli.</p></div><button class="button primary" id="download-button" type="button">Excel dosyamı indir<span class="arrow" aria-hidden="true">↓</span></button></section><div id="download-error" class="error-message" role="alert"></div><div id="download-success" ${state.downloaded ? '' : 'hidden'} class="download-success" role="status">Dosyan hazırlandı ve indirme başlatıldı. İndirmeler klasörünü kontrol edip Excel dosyanı yöneticinle paylaşabilirsin.<br><button class="text-button" id="finish-button" type="button">Bu sekmedeki bilgilerimi temizle</button></div><div class="download-steps"><span><b>1</b> Excel dosyanı indir</span><span><b>2</b> İndirdiğin dosyayı kontrol et</span><span><b>3</b> Yöneticinle paylaş</span></div>`;
+  content.innerHTML = `${header('SON ADIM · GÖZDEN GEÇİR')}<section class="review-header"><span class="eyebrow">${complete ? 'KENDİN İÇİN GÜZEL BİR ADIM ATTIN' : 'BİTİRMEYE BİRKAÇ ADIM KALDI'}</span><h1>${complete ? 'Tamamlandı.<br>Şimdi sıra paylaşmakta.' : 'Son bir kontrol yapalım.'}</h1><p>${complete ? 'Yanıtların hazır. Excel dosyanı indir ve yöneticinle paylaş. Dosyan, orijinal envanter şablonunda hazırlanacak.' : 'Aşağıdaki bölümlerden eksik bilgilerini tamamlayabilirsin. Excel’ini tüm soruları cevapladıktan sonra indirebilirsin.'}</p></section><div class="review-identity"><div><strong>${escape(state.profile.name.trim() || 'Ad-soyad eksik')}</strong><span>${escape(state.profile.title.trim() || 'Unvan eksik')}</span></div><button type="button" class="text-button" data-step="0">Bilgilerimi düzenle</button></div><div class="review-grid">${survey.sections.map((s, i) => { const count = answeredCount(s, state); return `<section class="review-item"><div class="review-item-header"><h2>${s.title}</h2><span class="count-pill ${count === s.count ? '' : 'missing'}">${count === s.count ? '✓ ' : ''}${count} / ${s.count}</span></div><button class="text-button" type="button" data-review="${i}">${count === s.count ? 'Yanıtları gözden geçir' : `${s.count - count} eksik yanıtı tamamla`}<span aria-hidden="true"> ↗</span></button></section>`; }).join('')}</div>${complete ? resultsHtml(survey, state) : '<p class="results-pending">Grafiklerin, tüm soruları ve kişisel bilgilerini tamamladığında burada görünecek.</p>'}<section class="download-card"><div><h2>Yanıtların tek bir Excel dosyasında.</h2><p>Değerlendirme sekmeleri de otomatik doldurulur.<br>İndirdiğin .xlsx dosyasını yöneticine iletmen yeterli.</p></div><button class="button primary" id="download-button" type="button">Excel dosyamı indir<span class="arrow" aria-hidden="true">↓</span></button></section><div id="download-error" class="error-message" role="alert"></div><div id="download-success" ${state.downloaded ? '' : 'hidden'} class="download-success" role="status">Dosyan hazırlandı ve indirme başlatıldı. İndirmeler klasörünü kontrol edip Excel dosyanı yöneticinle paylaşabilirsin.<br><button class="text-button" id="finish-button" type="button">Bu tarayıcıdaki bilgilerimi temizle</button></div><div class="download-steps"><span><b>1</b> Excel dosyanı indir</span><span><b>2</b> İndirdiğin dosyayı kontrol et</span><span><b>3</b> Yöneticinle paylaş</span></div>`;
 }
 
 function render({ focus = false } = {}) {
@@ -192,11 +193,14 @@ document.addEventListener('click', event => {
   if (['reset-button', 'finish-button'].includes(button.id)) document.querySelector('#reset-dialog').showModal();
   if (button.id === 'cancel-reset') document.querySelector('#reset-dialog').close();
   if (button.id === 'confirm-reset') {
+    if (!clearDraft()) {
+      status('Kayıtlar temizlenemedi. Tarayıcı ayarlarından bu sitenin verilerini temizle.');
+      return;
+    }
     document.querySelector('#reset-dialog').close();
     if (downloadedUrl) { URL.revokeObjectURL(downloadedUrl); downloadedUrl = undefined; }
     state = emptyState(survey);
-    try { sessionStorage.removeItem(DRAFT_KEY); } catch { /* Storage may be disabled. */ }
-    render({ focus: true }); status('Bu sekmedeki tüm yanıtlar ve kişisel bilgiler temizlendi.');
+    render({ focus: true }); status('Bu tarayıcıdaki tüm yanıtlar ve kişisel bilgiler temizlendi.');
   }
 });
 
@@ -205,9 +209,8 @@ async function init() {
     const response = await fetch('./data/survey.json', { cache: 'no-store' });
     if (!response.ok) throw new Error('Sorular yüklenemedi.');
     survey = await response.json();
-    let raw = null;
-    try { raw = sessionStorage.getItem(DRAFT_KEY); } catch { storageAvailable = false; }
-    state = restoreState(survey, raw);
+    state = restoreState(survey, loadDraft());
+    save();
     render();
   } catch {
     content.innerHTML = '<div class="loading-card"><h2>Sayfa yüklenemedi.</h2><p>Bağlantını kontrol edip tekrar dene. Yerel dosyayı açıyorsan uygulamayı bir HTTP sunucusuyla başlat.</p><button type="button" id="retry-button" class="button primary retry-action">Tekrar dene</button></div>';

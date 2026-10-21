@@ -51,7 +51,7 @@ Sorular beşerli sayfalarda gösterilir. Bölümler arasında serbestçe gezinil
 
 ## Veri nerede tutulur?
 
-- Cevaplar, ad-soyad ve unvan **yalnızca tarayıcının `sessionStorage` alanında** tutulur. Aynı sekmeyi yenileyince devam edilebilir. Tarayıcının oturum kurtarma davranışı değişebilir; ortak cihazda iş bitince **bilgilerimi temizle** düğmesini kullan.
+- Cevaplar, ad-soyad, unvan ve son açık bölüm/sayfa tarayıcının `localStorage` alanında saklanır. Aynı origin (protokol + alan adı + port), cihaz ve tarayıcı profiliyle yeniden açınca devam edilir. Eski `sessionStorage` taslağı, kalıcı kayıt yoksa otomatik taşınır. Farklı cihaz/tarayıcılar arasında senkronizasyon yoktur; gizli mod veya site verilerini silmek kaydı kaldırabilir. Ortak cihazda iş bitince **bilgilerimi temizle** düğmesini kullan. Aynı anda birden fazla sekmede düzenlemede son kayıt geçerlidir.
 - Bilgi ve yanıtları gönderen bir API, e-posta, analitik, haricî font veya CDN çağrısı yoktur. Hosting hizmeti yalnızca sayfanın ve sabit dosyaların normal HTTP isteklerini görür.
 - Excel dosyası tarayıcıda oluşturulur. Dosya kendiliğinden yöneticiye gönderilmez.
 - GitHub’a yalnızca boş Excel şablonu ve uygulama kodu konur. Dolu Excel dosyaları ve `test-output/` depoya eklenmemelidir.

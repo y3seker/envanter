@@ -150,3 +150,22 @@ test('real exports preserve every package entry and all non-edited parts byte fo
   }
   console.log(`Export fixtures: ${fileURLToPath(output)}`);
 });
+
+test('result charts match independent scoring expectations and control endpoints', async () => {
+  const { resultScores, resultsHtml } = await import('../results.js');
+  const state = completeState('A');
+  assert.deepEqual(resultScores(survey, state), {
+    communication: [50, 50, 50, 50], behavior: [14, 0, 14, 0],
+    motivation: [40, 40, 40, 40], control: 11,
+  });
+  const keys = {2:'B',3:'A',4:'A',5:'A',6:'B',7:'B',9:'B',10:'A',11:'A',12:'A',13:'A',15:'A',16:'B',17:'B',18:'B',20:'B',21:'B',22:'A',23:'B',25:'B',26:'A',28:'A',29:'B'};
+  for (const maximum of [false, true]) {
+    for (const [n, answer] of Object.entries(keys)) state.answers.control[`control-${n}`] = maximum ? answer : answer === 'A' ? 'B' : 'A';
+    assert.equal(resultScores(survey, state).control, maximum ? 23 : 0);
+    const html = resultsHtml(survey, state);
+    assert.ok(html.includes(`circle cx="${maximum ? 410 : 30}" cy="27"`));
+    assert.ok(!html.includes('NaN'));
+  }
+  delete state.answers.control['control-29'];
+  assert.throws(() => resultsHtml(survey, state), /tüm soruları/);
+});
