@@ -195,3 +195,6 @@ body {
 .team-map { width: 100%; max-width: 720px; display: block; margin: auto; font-family: inherit; font-size: 14px; }
 .map-legend { columns: 2; font-size: 14px; line-height: 1.8; }
 @media(max-width:760px) { .analysis-main { padding: 28px 18px; } .team-metrics { grid-template-columns: 1fr; } .map-legend { columns: 1; } }
+.skip-motivation { padding: 18px; margin-bottom: 22px; border: 1px solid #dedfcb; border-radius: 12px; background: #f3f3e7; }
+.skip-motivation p { font-size: 13px; color: #596b5e; margin: 12px 0 0; }
+.motivation-missing { padding: 16px; background: #f3f3e7; border-radius: 10px; }

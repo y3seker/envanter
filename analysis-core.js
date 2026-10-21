@@ -1,4 +1,4 @@
-import { workbookValues, assertComplete } from './core.js';
+import { workbookValues, assertComplete, MOTIVATION_SKIP_REASON } from './core.js';
 import { readWorkbook, expandedFormulas } from './workbook-reader.js';
 import { setCell } from './excel.js';
 
@@ -62,13 +62,24 @@ export async function createTeamWorkbook(survey,participants,template,leader=nul
  }
  for(const [i,row] of records.entries()) for(const [c,value] of row.entries()) xml=setCell(xml,`${String.fromCharCode(65+c)}${4+i}`,value);
  for(let c=3;c<18;c++) {
-  const col=String.fromCharCode(65+c),mean=records.reduce((n,row)=>n+row[c],0)/records.length;
-  xml=setCell(xml,`${col}${averageRow}`,mean,`AVERAGE(${col}4:${col}${3+records.length})`);
+  const col=String.fromCharCode(65+c), values=records.map(row=>row[c]).filter(value=>value!==null);
+  const mean=values.length ? values.reduce((n,value)=>n+value,0)/values.length : '';
+  const range=`${col}4:${col}${3+records.length}`;
+  const formula=values.length===records.length ? `AVERAGE(${range})` : `IF(COUNT(${range})=0,"",AVERAGE(${range}))`;
+  xml=setCell(xml,`${col}${averageRow}`,mean,formula);
  }
  if(leader) {
   const record=teamRecord(survey,leader.state,leader.color);
   for(let c=2;c<18;c++) xml=setCell(xml,`${String.fromCharCode(65+c)}${profileRow}`,record[c]);
   xml=setCell(xml,`A${profileRow+1}`,`${record[0]} · ${record[1]}`);
+ }
+ if (participants.some(p=>p.state.motivationSkipped) || leader?.state.motivationSkipped) {
+  xml=setCell(xml,'S1','Katılım');xml=setCell(xml,'S2','Motivasyon durumu');
+  for (const [i,p] of participants.entries()) xml=setCell(xml,`S${i+4}`,p.state.motivationSkipped ? MOTIVATION_SKIP_REASON : 'Yanıtlandı');
+  const included=records.filter(row=>row[16]!==null).length;
+  xml=setCell(xml,`S${averageRow}`,`Motivasyon ortalaması: ${included}/${records.length} kişi`);
+  if(leader) xml=setCell(xml,`S${profileRow}`,leader.state.motivationSkipped ? MOTIVATION_SKIP_REASON : 'Yanıtlandı');
+  xml=xml.replace('<col min="19" max="16384"', '<col min="19" max="19" width="52" customWidth="1"/><col min="20" max="16384"');
  }
  // Give the existing profile note a readable full-width line.
  const noteRow=profileRow+1;

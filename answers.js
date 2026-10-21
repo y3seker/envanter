@@ -1,4 +1,4 @@
-import { assertComplete, downloadFilename, emptyState } from './core.js';
+import { assertComplete, downloadFilename, emptyState, sectionSkipped, MOTIVATION_SKIP_REASON } from './core.js';
 import { setCell } from './excel.js';
 import { readWorkbook, xmlText } from './workbook-reader.js';
 
@@ -7,10 +7,12 @@ export async function createAnswerWorkbook(survey,state,template) {
  const zip=await globalThis.JSZip.loadAsync(template);
  let identity=await zip.file('xl/worksheets/sheet1.xml').async('string');
  identity=setCell(identity,'B2',state.profile.name.trim());identity=setCell(identity,'B3',state.profile.title.trim());
+ identity=setCell(identity,'A5','Motivasyon durumu');
+ identity=setCell(identity,'B5',state.motivationSkipped ? MOTIVATION_SKIP_REASON : 'Yanıtlandı');
  zip.file('xl/worksheets/sheet1.xml',identity);
  for(const [i,section] of survey.sections.entries()) {
   const path=`xl/worksheets/sheet${i+2}.xml`;let xml=await zip.file(path).async('string');
-  for(const q of section.questions) xml=setCell(xml,`D${q.number+1}`,state.answers[section.id][q.id]);
+  for(const q of section.questions) xml=setCell(xml,`D${q.number+1}`,sectionSkipped(section,state) ? null : state.answers[section.id][q.id]);
   zip.file(path,xml);
  }
  return {bytes:await zip.generateAsync({type:'uint8array',compression:'DEFLATE'}),filename:downloadFilename(state.profile).replace(/^RiseUp-/, 'Envanter-Cevaplar-')};
@@ -23,6 +25,7 @@ export async function importAnswers(survey,bytes) {
  if(identity&&!modern) throw Error('Cevap dosyasının sürümü desteklenmiyor.');
  if(modern) {
   state.profile={name:identity.cells.B2?.value,title:identity.cells.B3?.value};
+  state.motivationSkipped=identity.cells.B5?.formula===null && identity.cells.B5?.value===MOTIVATION_SKIP_REASON;
   if(identity.cells.B2?.formula!==null||identity.cells.B3?.formula!==null) throw Error('Kimlik alanında formül olamaz.');
  } else {
   if(!book.sheets.some(s=>s.name==='Giriş')||!book.zip.file('xl/drawings/drawing1.xml')) throw Error('Envanter cevap dosyası tanınmadı.');
@@ -30,12 +33,17 @@ export async function importAnswers(survey,bytes) {
   const texts=[...drawing.matchAll(/<a:p\b[^>]*>([\s\S]*?)<\/a:p>/g)].map(m=>xmlText(m[1]));
   state.profile={name:texts.find(t=>t.startsWith('Ad- Soyad:'))?.slice(10).trim(),title:texts.find(t=>t.startsWith('Unvan:'))?.slice(6).trim()};
  }
+ if(!modern) state.motivationSkipped=book.sheets.find(s=>s.name===survey.sections.find(s=>s.id==='motivation').sheetName)?.cells.F1?.value===MOTIVATION_SKIP_REASON;
  for(const section of survey.sections) {
   const sheet=book.sheets.find(s=>s.name===section.sheetName);if(!sheet) throw Error(`Eksik sayfa: ${section.sheetName}`);
   for(const q of section.questions) {
    const ref=modern?`D${q.number+1}`:q.cell;
    if(modern && sheet.cells[`A${q.number+1}`]?.value!==q.number) throw Error(`${section.title}: soru sırası değiştirilmiş.`);
    const cell=sheet.cells[ref];
+   if(sectionSkipped(section,state)) {
+    if(cell?.formula!=null || (cell?.value!=null && cell.value!=='')) throw Error('Atlanan motivasyon bölümünde cevap var; dosyayı uygulamadan yeniden indir.');
+    continue;
+   }
    if(cell?.formula!==null) throw Error(`${section.title}, soru ${q.number}: cevap eksik veya formül içeriyor.`);
    let value=cell.value;
    if(section.kind==='scale'&&typeof value==='string'&&/^[1-5]$/.test(value)) value=Number(value);

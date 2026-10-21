@@ -1,8 +1,9 @@
 export const PAGE_SIZE = 5;
+export const MOTIVATION_SKIP_REASON = 'Yeni başladım, henüz yeterli gözlemim yok';
 export const DRAFT_KEY = 'riseup:team-inventories:v1';
 
 export function emptyState(survey) {
-  return { version: survey.version, profile: { name: '', title: '' }, answers: Object.fromEntries(survey.sections.map(s => [s.id, {}])), step: 0, pages: {}, downloaded: false };
+  return { version: survey.version, profile: { name: '', title: '' }, answers: Object.fromEntries(survey.sections.map(s => [s.id, {}])), step: 0, pages: {}, motivationSkipped: false, downloaded: false };
 }
 
 export function validAnswer(section, value) {
@@ -24,6 +25,7 @@ export function restoreState(survey, raw) {
       if (Number.isInteger(page)) state.pages[section.id] = Math.min(Math.max(0, page), Math.ceil(section.count / PAGE_SIZE) - 1);
     }
     if (Number.isInteger(saved.step)) state.step = Math.min(survey.sections.length + 1, Math.max(0, saved.step));
+    state.motivationSkipped = saved.motivationSkipped === true;
     state.downloaded = saved.downloaded === true;
   } catch { /* A missing or invalid draft starts a clean form. */ }
   return state;
@@ -33,7 +35,20 @@ export function profileIsValid(profile) {
   return typeof profile?.name === 'string' && profile.name.trim().length >= 2 && profile.name.trim().length <= 80 && typeof profile?.title === 'string' && profile.title.trim().length >= 2 && profile.title.trim().length <= 100 && !/[\u0000-\u001f]/.test(profile.name + profile.title);
 }
 
+export function sectionSkipped(section, state) {
+  return section.id === 'motivation' && state.motivationSkipped === true;
+}
+export function sectionComplete(section, state) {
+  return sectionSkipped(section, state) || answeredCount(section, state) === section.count;
+}
+export function requiredQuestionCount(survey, state) {
+  return survey.sections.filter(s => !sectionSkipped(s, state)).reduce((n, s) => n + s.count, 0);
+}
+export function answersComplete(survey, state) {
+  return survey.sections.every(s => sectionComplete(s, state));
+}
 export function answeredCount(section, state) {
+  if (sectionSkipped(section, state)) return 0;
   return section.questions.filter(q => validAnswer(section, state.answers[section.id]?.[q.id])).length;
 }
 
@@ -42,12 +57,13 @@ export function totalAnswered(survey, state) {
 }
 
 export function missingQuestions(section, state) {
+  if (sectionSkipped(section, state)) return [];
   return section.questions.filter(q => !validAnswer(section, state.answers[section.id]?.[q.id]));
 }
 
 export function assertComplete(survey, state) {
   if (!profileIsValid(state.profile)) throw new Error('Ad-soyad ve unvan bilgilerini kontrol et.');
-  if (totalAnswered(survey, state) !== survey.totalQuestions) throw new Error('Excel’i indirmeden önce tüm soruları cevapla.');
+  if (!answersComplete(survey, state)) throw new Error('Excel’i indirmeden önce tüm soruları cevapla.');
 }
 
 // This is deliberately limited to the three formula patterns present in the
@@ -86,6 +102,13 @@ export function workbookValues(survey, state) {
   const sheets = {};
   for (const section of survey.sections) {
     const source = {}, evaluation = {};
+    if (sectionSkipped(section, state)) {
+      sheets[section.sheet] = Object.fromEntries(section.questions.map(q => [q.cell, null]));
+      sheets[section.sheet].F1 = MOTIVATION_SKIP_REASON;
+      sheets[section.evaluationSheet] = Object.fromEntries([...section.questions.map(q => q.evaluationCell), ...Object.keys(survey.formulas[section.evaluationSheet])].map(ref => [ref, null]));
+      sheets[section.evaluationSheet].J1 = MOTIVATION_SKIP_REASON;
+      continue;
+    }
     for (const q of section.questions) {
       const value = state.answers[section.id][q.id];
       source[q.cell] = value;

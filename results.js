@@ -6,7 +6,7 @@ export function resultScores(survey, state) {
   return {
     communication: ['E3', 'E4', 'E5', 'E6'].map(ref => sheets[3][ref]),
     behavior: ['G17', 'H17', 'J17', 'K17'].map(ref => sheets[5][ref]),
-    motivation: ['K4', 'K5', 'K6', 'K7'].map(ref => sheets[7][ref]),
+    motivation: state.motivationSkipped ? null : ['K4', 'K5', 'K6', 'K7'].map(ref => sheets[7][ref]),
     control: sheets[9].F30,
   };
 }
@@ -37,7 +37,7 @@ export function resultsHtml(survey, state) {
         </svg>
         <dl class="behavior-values"><div><dt>Direkt</dt><dd>${direct}/14</dd></div><div><dt>İndirekt</dt><dd>${indirect}/14</dd></div><div><dt>İnsan odaklı</dt><dd>${people}/14</dd></div><div><dt>İş odaklı</dt><dd>${task}/14</dd></div></dl>
       </article>
-      <article class="result-card"><span class="result-kicker">03 / MOTİVASYON</span><h3>Motivasyon ihtiyacı</h3><p>Birlikte çalıştığın kişilere ilişkin yanıtlarının özeti. Her başlık 10–40 puan.</p>${bars(['Başarı', 'Etkileme', 'İlişkiler', 'Güvenlik'], scores.motivation, 40)}</article>
+      <article class="result-card"><span class="result-kicker">03 / MOTİVASYON</span><h3>Motivasyon ihtiyacı</h3><p>Birlikte çalıştığın kişilere ilişkin yanıtlarının özeti. Her başlık 10–40 puan.</p>${scores.motivation ? bars(['Başarı', 'Etkileme', 'İlişkiler', 'Güvenlik'], scores.motivation, 40) : '<p class="motivation-missing">Yeni başladım: yeterli gözlem olmadığı için bu bölüm boş geçildi. Puan hesaplanmadı.</p>'}</article>
       <article class="result-card control-result"><span class="result-kicker">04 / KONTROL ODAĞI</span><h3>İç–dış motivasyon</h3><p>Şablondaki 0–23 ölçeğinde konumun. Puan yükseldikçe gösterge iç kontrol odağına yaklaşır.</p><div class="control-score"><strong>${scores.control}</strong><span>/ 23 puan</span></div>
         <svg class="control-chart" viewBox="0 0 440 76" role="img" aria-label="Kontrol odağı: ${scores.control} / 23. Sıfır dış kontrol, 23 iç kontrol odağı."><defs><linearGradient id="control-gradient"><stop stop-color="#dda66c"/><stop offset="1" stop-color="#527d68"/></linearGradient></defs><rect x="30" y="20" width="380" height="14" rx="7" fill="url(#control-gradient)"/><circle cx="${marker}" cy="27" r="11" fill="#fff" stroke="#263d35" stroke-width="3"/><text x="30" y="65">0</text><text x="410" y="65" text-anchor="end">23</text></svg>
         <div class="control-labels"><span>Dış kontrol odağı</span><span>İç kontrol odağı</span></div>

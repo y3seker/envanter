@@ -21,6 +21,8 @@ Davranış rengi önerisi, özgün haritada alanı en büyük olan bölgeye gör
 ## Katılımcı ve kayıt
 
 - İletişim: 40 soru, 1–5. Davranış: 28 soru, A/B. Motivasyon: 40 soru, 1–4. İç-dış kontrol: 29 soru, A/B.
+- Motivasyon bölümündeki **Yeni başladım · Bu bölümü boş geç** seçeneği yeterli gözlemi olmayan katılımcının diğer 97 soruyu tamamlayıp Excel indirmesini sağlar. Tercih tarayıcı kaydında ve cevap Excel’inin `Katılımcı!B5` hücresinde saklanır. Eski taslaklar normal akışla açılır. Önceki motivasyon yanıtları taslakta korunur, ancak atlama etkin olduğu sürece dışa aktarılmaz; tercih geri alınabilir.
+- Yönetici değerlendirmesinde atlanan motivasyon yanıtları, formülleri ve puanları boş kalır; gerekçe görünür. Ekip Excel’inde M:Q boş bırakılır ve yalnızca yanıtlayanların motivasyon ortalaması alınır. Hiç yanıtlayan yoksa ortalama boş kalır; S sütununda durum ve katılımcı sayısı gösterilir. Diğer üç envanterin hesaplamaları bu kişiler için devam eder.
 - Beşerli soru sayfaları, eksik yanıt denetimi ve ad-soyad/unvan doğrulaması korunur.
 - Yanıtlar ve son açık sayfa `localStorage` ile aynı origin, cihaz ve tarayıcı profilinde saklanır. Eski `sessionStorage` taslağı, kalıcı kayıt yoksa taşınır. Cihazlar arası senkronizasyon yoktur.
 - **Yanıtları temizle** uygulamanın kalıcı ve eski oturum kaydını siler. Gizli mod veya site verilerinin silinmesi kaydı kaldırabilir. Aynı anda birkaç sekmede düzenlemede son kayıt geçerlidir.

@@ -136,3 +136,30 @@ for count in [1,10,11,25]:
         for name in z.namelist():
             if name.endswith('.xml') or name.endswith('.rels'): ET.fromstring(z.read(name))
     print(f'Team {count}: all 15 numeric columns, independent means, shifted profile and XML valid.')
+
+# Explicit new-starter opt-out must never become a zero score.
+for name in ['skipped-answers', 'skipped-full', 'skipped-team-mixed', 'skipped-team-all']:
+    path = root / f'test-output/{name}.xlsx'
+    v = openpyxl.load_workbook(path, data_only=True)
+    f = openpyxl.load_workbook(path, data_only=False)
+    if name == 'skipped-answers':
+        assert v['Katılımcı']['B5'].value == 'Yeni başladım, henüz yeterli gözlemim yok'
+        assert all(v.worksheets[3].cell(r,4).value is None for r in range(2,42))
+    elif name == 'skipped-full':
+        assert all(v.worksheets[6][ref].value is None for ref in ['K4','K5','K6','K7','K8'])
+        assert not any(c.data_type == 'f' for row in f.worksheets[6] for c in row)
+        with ZipFile(path) as z: assert 'xl/calcChain.xml' not in z.namelist()
+    else:
+        for c in range(13,18):
+            assert v.active.cell(4,c).value is None
+            assert v.active.cell(16,c).value is None
+            if name.endswith('mixed'):
+                assert v.active.cell(14,c).value == v.active.cell(5,c).value
+            else:
+                assert v.active.cell(14,c).value in [None,'']
+            assert f.active.cell(14,c).value.startswith('=IF(COUNT(')
+        assert '1/2' in v.active['S14'].value if name.endswith('mixed') else '0/1' in v.active['S14'].value
+    with ZipFile(path) as z:
+        for n in z.namelist():
+            if n.endswith('.xml') or n.endswith('.rels'): ET.fromstring(z.read(n))
+    print(f'{name}: missing motivation stays blank, status and averages verified.')

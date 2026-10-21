@@ -78,3 +78,55 @@ test('team export supports 1, 10, 11 and 25 people, shifts the profile safely an
  await assert.rejects(createTeamWorkbook(evaluated,[p,p],teamTemplate),/birden fazla/);
  await assert.rejects(createTeamWorkbook(evaluated,[p],teamTemplate,p),/ekip listesinde/);
 });
+
+test('new starters can skip only motivation; draft, both exports and import preserve the explicit reason',async()=>{
+ const {restoreState,answersComplete,requiredQuestionCount,totalAnswered,MOTIVATION_SKIP_REASON}=await import('../core.js');
+ const state=stateFor(70);state.motivationSkipped=true;
+ // Keep previously entered answers in the draft, but never export them while skipped.
+ const restored=restoreState(survey,JSON.stringify(state));
+ assert.equal(restored.motivationSkipped,true);
+ assert.deepEqual(restored.answers.motivation,state.answers.motivation);
+ assert.equal(answersComplete(survey,restored),true);
+ assert.equal(requiredQuestionCount(survey,restored),97);assert.equal(totalAnswered(survey,restored),97);
+ const answer=await createAnswerWorkbook(survey,state,answerTemplate), book=await readWorkbook(answer.bytes);
+ assert.equal(book.sheets[0].cells.B5.value,MOTIVATION_SKIP_REASON);
+ for(let r=2;r<=41;r++)assert.equal(book.sheets[3].cells[`D${r}`].value,null);
+ const imported=await importAnswers(survey,answer.bytes);
+ assert.equal(imported.motivationSkipped,true);assert.deepEqual(imported.answers.motivation,{});
+ const full=await createWorkbook(evaluated,imported,evaluationTemplate), evaluatedBook=await readWorkbook(full.bytes);
+ assert.equal(evaluatedBook.zip.file('xl/calcChain.xml'),null);
+ for(const ref of ['K4','K5','K6','K7','K8']) {
+  assert.equal(evaluatedBook.sheets[6].cells[ref].value,null);
+  assert.equal(evaluatedBook.sheets[6].cells[ref].formula,null);
+ }
+ assert.equal((await importAnswers(survey,full.bytes)).motivationSkipped,true);
+ const scores=teamRecord(evaluated,imported);assert.deepEqual(scores.slice(12,17),[null,null,null,null,null]);
+ const {resultsHtml}=await import('../results.js');assert.match(resultsHtml(evaluated,imported),/Puan hesaplanmadı/);
+ imported.motivationSkipped=false;assert.equal(answersComplete(survey,imported),false);
+ imported.motivationSkipped=true;delete imported.answers.control['control-1'];
+ await assert.rejects(createAnswerWorkbook(survey,imported,answerTemplate));
+ const zip=await globalThis.JSZip.loadAsync(answer.bytes), path='xl/worksheets/sheet4.xml';
+ zip.file(path,setCell(await zip.file(path).async('string'),'D2',3));
+ await assert.rejects(importAnswers(survey,await zip.generateAsync({type:'uint8array'})),/Atlanan motivasyon/);
+ await writeFile(new URL('test-output/skipped-answers.xlsx',root),answer.bytes);
+ await writeFile(new URL('test-output/skipped-full.xlsx',root),full.bytes);
+});
+
+test('team motivation averages exclude skipped people and remain blank when everyone skips',async()=>{
+ const skipped=stateFor(80);skipped.motivationSkipped=true;
+ const completed=stateFor(81), expected=teamRecord(evaluated,completed);
+ for(const allSkipped of [false,true]) {
+  const people=allSkipped?[{state:skipped}]:[{state:skipped},{state:completed}];
+  const file=await createTeamWorkbook(evaluated,people,teamTemplate,{state:{...stateFor(82),motivationSkipped:true}}),book=await readWorkbook(file.bytes),cells=book.sheets[0].cells;
+  for(let c=12;c<=16;c++) {
+   const col=String.fromCharCode(65+c);
+   assert.equal(cells[`${col}4`].value,null);
+   assert.equal(cells[`${col}14`].value,allSkipped?'':expected[c]);
+   assert.match(cells[`${col}14`].formula,/IF\(COUNT/);
+   assert.equal(cells[`${col}16`].value,null);
+  }
+  assert.match(cells.S14.value,allSkipped?/0\/1 kişi/:/1\/2 kişi/);
+  assert.ok(cells.H4.value>0);assert.ok(cells.R4.value>=0);
+  await writeFile(new URL(`test-output/skipped-team-${allSkipped?'all':'mixed'}.xlsx`,root),file.bytes);
+ }
+});

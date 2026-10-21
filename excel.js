@@ -14,8 +14,8 @@ export function setCell(xml, ref, value, formula = null) {
   const pattern = new RegExp(`<c\\b([^>]*\\br="${ref}"[^>]*?)(?:\\/>|>[\\s\\S]*?<\\/c>)`);
   const existing = pattern.exec(xml);
   const attributes = existing ? existing[1].replace(/\s+t="[^"]*"/g, '').replace(/\/$/, '') : ` r="${ref}"`;
-  const contents = formula !== null ? `<f>${escapeXml(formula)}</f><v>${value}</v>` : typeof value === 'number' ? `<v>${value}</v>` : `<is><t xml:space="preserve">${escapeXml(value)}</t></is>`;
-  const type = typeof value === 'string' && formula === null ? ' t="inlineStr"' : '';
+  const contents = value === null ? '' : formula !== null ? `<f>${escapeXml(formula)}</f><v>${escapeXml(value)}</v>` : typeof value === 'number' ? `<v>${value}</v>` : `<is><t xml:space="preserve">${escapeXml(value)}</t></is>`;
+  const type = typeof value === 'string' ? (formula === null ? ' t="inlineStr"' : ' t="str"') : '';
   const cell = `<c${attributes}${type}>${contents}</c>`;
   if (existing) return xml.replace(pattern, () => cell);
   const row = /\d+$/.exec(ref)?.[0];
@@ -86,7 +86,7 @@ export async function createWorkbook(survey, state, template, JSZipConstructor =
   }
   for (const [sheet, cells] of Object.entries(values)) {
     await edit(`xl/worksheets/sheet${sheet}.xml`, xml => {
-      for (const [ref, value] of Object.entries(cells)) xml = setCell(xml, ref, value, survey.formulas[sheet]?.[ref] ?? null);
+      for (const [ref, value] of Object.entries(cells)) xml = setCell(xml, ref, value, value === null ? null : survey.formulas[sheet]?.[ref] ?? null);
       return xml;
     });
   }
@@ -100,6 +100,12 @@ export async function createWorkbook(survey, state, template, JSZipConstructor =
   await edit('xl/drawings/drawing5.xml', xml => updateBehaviorDrawing(xml, values[5]));
   await edit('xl/drawings/drawing8.xml', xml => updateControlDrawing(xml, values[9].F30, survey.drawingLayout.control.columns));
   await edit('xl/workbook.xml', xml => xml.replace(/<calcPr\b[^>]*\/>/, '<calcPr calcId="191029" fullCalcOnLoad="1" forceFullCalc="1" calcMode="auto"/>'));
+  if (state.motivationSkipped && zip.file('xl/calcChain.xml')) {
+    zip.remove('xl/calcChain.xml');
+    for (const path of ['[Content_Types].xml', 'xl/_rels/workbook.xml.rels']) {
+      await edit(path, xml => xml.replace(/<(?:Override|Relationship)\b[^>]*calcChain[^>]*\/>/g, ''));
+    }
+  }
   const bytes = await zip.generateAsync({ type: 'uint8array', compression: 'DEFLATE', compressionOptions: { level: 6 } });
   return { bytes, filename: downloadFilename(state.profile) };
 }
