@@ -14,7 +14,7 @@ import openpyxl
 warnings.filterwarnings('ignore', category=UserWarning)
 root = Path(__file__).resolve().parents[1]
 survey = json.loads((root / 'data/survey.json').read_text())
-template = openpyxl.load_workbook(root / 'private-fixtures/envanter-sablonu.xlsx', data_only=False)
+template = openpyxl.load_workbook(root / 'assets/envanter-sablonu.xlsx', data_only=False)
 ns = {'s': 'http://schemas.openxmlformats.org/spreadsheetml/2006/main', 'a': 'http://schemas.openxmlformats.org/drawingml/2006/main', 'c': 'http://schemas.openxmlformats.org/drawingml/2006/chart'}
 
 # Questions must remain faithful to the supplied sheet, including the unusual

@@ -3,12 +3,12 @@
 İki ayrı akış vardır:
 
 - **`index.html` — katılımcı:** dört envanteri doldurur, yalnızca kimlik bilgileri ve 137 cevabını içeren Excel’i indirir. Sonuç grafikleri, değerlendirme sayfaları ve puanlar katılımcı çıktısında bulunmaz.
-- **`analiz-982429.html` — yönetici:** maildeki iki boş şablonu ve katılımcı dosyalarını seçer. Bireysel değerlendirmeleri tek tek veya ZIP olarak, ekip analizini özgün formatında Excel olarak indirir.
+- **`analiz-982429.html` — yönetici:** repodaki iki boş şablonu otomatik yükler; yönetici katılımcı dosyalarını seçer. Bireysel değerlendirmeleri tek tek veya ZIP olarak, ekip analizini özgün formatında Excel olarak indirir.
 
 ## Yönetici kullanımı
 
 1. Site adresinin sonuna `/analiz-982429.html` ekle.
-2. Maildeki boş `Envanterler-Uygulama Dosyası.xlsx` ve `EkipAnalizi.xlsx` dosyalarını seç.
+2. Boş bireysel ve ekip şablonları otomatik yüklenir; hazır durumunu bekle.
 3. Ekipten gelen cevap Excel’lerini topluca yükle. Uygulamanın eski sürümünde üretilmiş değerlendirmeli dosyalar da desteklenir. PDF profilleme raporları bu yükleyicide desteklenmez.
 4. Dosya hatalarını kontrol et. Eksik/geçersiz cevaplar veya aynı ad-soyad ve unvana sahip tekrar kayıtlar listeye alınmaz. Bir kişinin güncel dosyası için önce önceki kaydı kaldır.
 5. Gerekirse bir kişiyi **Benim profilim** olarak seç. Ekip ortalamasına dahil edilmez ve şablonun ayrı profil satırına yazılır. Kaynağın bireysel profilleme PDF’i ise bu alanı boş bırakıp indirilen Excel’e raporundan elle aktar.
@@ -30,7 +30,7 @@ Davranış rengi önerisi, özgün haritada alanı en büyük olan bölgeye gör
 
 ## Veri ve erişim
 
-Dosyalar ve cevaplar sunucuya gönderilmez. Analiz sayfasına yüklenen dosyalar yalnızca bellekte tutulur; sayfayı kapatınca veya **Yüklenen dosyaları temizle** ile kaldırılır. Kişisel dosyalar, e-posta ve değerlendirme şablonları depoya yüklenmez. Kamuya açık `data/survey.json` artık puanlama formülleri içermez; analiz bu formülleri yöneticinin yüklediği şablondan okur.
+Dosyalar ve cevaplar sunucuya gönderilmez. Analiz sayfasına yüklenen dosyalar yalnızca bellekte tutulur; sayfayı kapatınca veya **Yüklenen dosyaları temizle** ile kaldırılır. Kişisel dosyalar ve e-posta depoya yüklenmez. Boş değerlendirme şablonları `assets/` altında repoda tutulur ve siteyle yayımlanır. Kamuya açık `data/survey.json` artık puanlama formülleri içermez; analiz bu formülleri otomatik yüklenen şablondan okur.
 
 Ayrı analiz URL’si bir yetkilendirme sınırı değildir. Bu statik uygulamada giriş kontrolü yoktur. Şablona ve cevap dosyalarına sahip biri analiz yapabilir. Daha önce yayınlanan dosyalar tarayıcı önbelleğinde, eski indirmelerde veya Git geçmişinde bulunabilir; yeni sürüm onları geri alamaz.
 
@@ -52,14 +52,11 @@ Private Git deposu tek başına siteye erişimi kısıtlamaz. Erişim kontrolü 
 
 Katılımcı şablonu `assets/cevap-sablonu.xlsx` beş görünür sayfa içerir: `Katılımcı` ve dört soru sayfası. Kimlik B2/B3, format etiketi B4, soruların sıra numarası A, cevapları D sütunundadır. Gizli değerlendirme sayfası, formül, grafik veya çizim bulunmaz. Metin değerleri formül olarak çalıştırılmaz.
 
-Yöneticinin yüklediği özgün envanter şablonu ZIP/OOXML alanları değiştirilerek doldurulur. Dokuz sekme, stiller, görseller, yazdırma alanları ve 143 özgün formül korunur. A/B cevapları değerlendirmede 1/2’ye çevrilir; formül ve grafik önbellekleri, davranış dikdörtgeni ve kontrol odağı göstergesi güncellenir. Kontrol değerlendirme cevapları D1:D29’a yazılır; D30 boş kalır.
+Repoda tutulan özgün envanter şablonu ZIP/OOXML alanları değiştirilerek doldurulur. Dokuz sekme, stiller, görseller, yazdırma alanları ve 143 özgün formül korunur. A/B cevapları değerlendirmede 1/2’ye çevrilir; formül ve grafik önbellekleri, davranış dikdörtgeni ve kontrol odağı göstergesi güncellenir. Kontrol değerlendirme cevapları D1:D29’a yazılır; D30 boş kalır.
 
 ## Testler
 
-Değerlendirme şablonları artık yayınlanan varlıklar değildir. Testleri çalıştırmadan önce maildeki boş dosyaları aşağıdaki yerel, Git tarafından yok sayılan konumlara kopyala:
-
-- `private-fixtures/envanter-sablonu.xlsx`: Envanterler-Uygulama Dosyası.xlsx
-- `private-fixtures/ekip-sablonu.xlsx`: EkipAnalizi.xlsx
+Testler, siteyle aynı `assets/envanter-sablonu.xlsx` ve `assets/ekip-sablonu.xlsx` boş şablonlarını kullanır. Şablonları değiştirmek için bu iki dosyayı güncelle.
 
 ```sh
 npm test

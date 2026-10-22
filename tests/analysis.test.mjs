@@ -10,8 +10,8 @@ import { readWorkbook } from '../workbook-reader.js';
 const root=new URL('../',import.meta.url);
 const survey=JSON.parse(await readFile(new URL('data/survey.json',root),'utf8'));
 const answerTemplate=await readFile(new URL('assets/cevap-sablonu.xlsx',root));
-const evaluationTemplate=await readFile(new URL('private-fixtures/envanter-sablonu.xlsx',root));
-const teamTemplate=await readFile(new URL('private-fixtures/ekip-sablonu.xlsx',root));
+const evaluationTemplate=await readFile(new URL('assets/envanter-sablonu.xlsx',root));
+const teamTemplate=await readFile(new URL('assets/ekip-sablonu.xlsx',root));
 const evaluated=await evaluationSurvey(survey,evaluationTemplate);
 await mkdir(new URL('test-output/',root),{recursive:true});
 function stateFor(i=1) {

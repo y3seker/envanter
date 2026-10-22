@@ -41,16 +41,19 @@ async function bytes(file) {
  if(file.size>8*1024*1024) throw Error('Dosya 8 MB sınırını aşıyor.');
  return new Uint8Array(await file.arrayBuffer());
 }
-$('#evaluation-template').addEventListener('change',e=>run(async()=>{
- evaluated=null;evaluationBytes=null;$('#evaluation-status').textContent='Şablon kontrol ediliyor…';
- try {const data=await bytes(e.target.files[0]);evaluated=await evaluationSurvey(survey,data);evaluationBytes=data;$('#evaluation-status').textContent='9 sayfa ve 143 formül doğrulandı.';}
- catch(error){$('#evaluation-status').textContent='Şablon yüklenemedi.';throw error;}
-}));
-$('#team-template').addEventListener('change',e=>run(async()=>{
- teamBytes=null;$('#team-status').textContent='Şablon kontrol ediliyor…';
- try {const data=await bytes(e.target.files[0]);await validateTeamTemplate(data);teamBytes=data;$('#team-status').textContent='Ekip şablonu hazır; satırlar kişi sayısına göre genişler.';}
- catch(error){$('#team-status').textContent='Şablon yüklenemedi.';throw error;}
-}));
+async function loadTemplates() {
+ const load=async path=>{
+  const response=await fetch(path,{cache:'no-store'});
+  if(!response.ok)throw Error('Şablon yüklenemedi. Sayfayı yenileyip tekrar dene.');
+  return new Uint8Array(await response.arrayBuffer());
+ };
+ const [evaluation,team]=await Promise.all([load('./assets/envanter-sablonu.xlsx'),load('./assets/ekip-sablonu.xlsx')]);
+ const validated=await evaluationSurvey(survey,evaluation);
+ await validateTeamTemplate(team);
+ evaluated=validated;evaluationBytes=evaluation;teamBytes=team;
+ $('#evaluation-status').textContent='Bireysel değerlendirme şablonu hazır.';
+ $('#team-status').textContent='Ekip şablonu hazır; satırlar kişi sayısına göre genişler.';
+}
 $('#answer-files').addEventListener('change',e=>run(async()=>{
  const files=[...e.target.files],errors=[];
  if(files.length+entries.length>200) throw Error('En fazla 200 dosya yükleyebilirsin.');
@@ -87,10 +90,9 @@ $('#download-team').addEventListener('click',()=>run(async()=>{
  download(file.bytes,file.filename);
 }));
 $('#clear-files').addEventListener('click',()=>{
- entries=[];previewId=null;evaluated=null;evaluationBytes=null;teamBytes=null;
+ entries=[];previewId=null;
  document.querySelectorAll('input[type=file]').forEach(i=>i.value='');
- $('#evaluation-status').textContent='Bireysel değerlendirmeler için gerekli.';$('#team-status').textContent='Ekip çıktısının özgün düzeni korunur.';
  $('#import-errors').textContent='';$('#export-error').textContent='';urls.forEach(u=>URL.revokeObjectURL(u));urls.clear();render();
 });
-try {busy=true;controls();const response=await fetch('./data/survey.json',{cache:'no-store'});if(!response.ok)throw Error('Sorular yüklenemedi.');survey=await response.json();busy=false;render();}
+try {busy=true;controls();const response=await fetch('./data/survey.json',{cache:'no-store'});if(!response.ok)throw Error('Sorular yüklenemedi.');survey=await response.json();await loadTemplates();busy=false;render();}
 catch(e){$('#export-error').textContent=`${e.message} Sayfayı yenileyip tekrar dene.`;}

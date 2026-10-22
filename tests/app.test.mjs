@@ -7,7 +7,7 @@ import { emptyState, restoreState, validAnswer, profileIsValid, totalAnswered, w
 import { createWorkbook, setCell, updateBehaviorDrawing, updateControlDrawing } from '../excel.js';
 
 const baseSurvey = JSON.parse(await readFile(new URL('../data/survey.json', import.meta.url), 'utf8'));
-const template = await readFile(new URL('../private-fixtures/envanter-sablonu.xlsx', import.meta.url));
+const template = await readFile(new URL('../assets/envanter-sablonu.xlsx', import.meta.url));
 const { evaluationSurvey } = await import('../analysis-core.js');
 const survey = await evaluationSurvey(baseSurvey, template);
 const originalZip = await globalThis.JSZip.loadAsync(template);
