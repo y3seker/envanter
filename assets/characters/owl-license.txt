@@ -1,0 +1,8 @@
+Model Information:
+* title:	Owl Animation Fly
+* source:	https://sketchfab.com/3d-models/owl-animation-fly-2d1d4cdd118b4f929c61b13a05909bd4
+* author:	GremorySaiyan (https://sketchfab.com/GremorySaiyan)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works

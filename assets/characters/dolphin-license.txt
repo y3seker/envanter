@@ -1,0 +1,11 @@
+Model Information:
+* title:	Game-Ready dolphin (Swimming)
+* source:	https://sketchfab.com/3d-models/game-ready-dolphin-swimming-b621ec8894734bc79c04338edff3cd0d
+* author:	Allie2k (https://sketchfab.com/Allie2k)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Game-Ready dolphin (Swimming)" (https://sketchfab.com/3d-models/game-ready-dolphin-swimming-b621ec8894734bc79c04338edff3cd0d) by Allie2k (https://sketchfab.com/Allie2k) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

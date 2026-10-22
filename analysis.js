@@ -2,6 +2,9 @@ import { importAnswers } from './answers.js';
 import { evaluationSurvey, validateTeamTemplate, createTeamWorkbook, participantKey, teamRecord } from './analysis-core.js';
 import { createWorkbook } from './excel.js';
 import { resultsHtml } from './results.js';
+import { mountCharacter } from './character-viewer.js';
+import { matchingCharacters } from './behavior-characters.js';
+let disposeCharacter=()=>{};
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
 let survey, evaluated, evaluationBytes, teamBytes, entries=[],busy=false, previewId=null, nextId=1;
@@ -17,6 +20,7 @@ function controls() {
  document.querySelectorAll('input,select,#clear-files,[data-remove],[data-preview],[data-download]').forEach(el=>el.disabled=busy||(el.hasAttribute('data-download')&&!evaluated)||(el.hasAttribute('data-preview')&&!evaluated));
 }
 function render() {
+ disposeCharacter();
  $('#participants').innerHTML=entries.length?`<div class="analysis-table-wrap"><table class="analysis-table"><thead><tr><th scope="col">Katılımcı</th><th scope="col">Kapsam</th><th scope="col">Davranış rengi</th><th scope="col">İşlemler</th></tr></thead><tbody>${entries.map(e=>`<tr><td><strong>${esc(e.state.profile.name)}</strong><small>${esc(e.state.profile.title)}</small><small>${esc(e.filename)}</small>${e.state.motivationSkipped ? '<small>Motivasyon: yeni başladı, atlandı</small>' : ''}</td><td><select data-role="${e.id}" aria-label="${esc(e.state.profile.name)} kapsamı"><option value="team" ${e.role==='team'?'selected':''}>Ekip üyesi</option><option value="leader" ${e.role==='leader'?'selected':''}>Benim profilim</option></select></td><td><input data-color="${e.id}" aria-label="${esc(e.state.profile.name)} davranış rengi" maxlength="60" value="${esc(e.color)}" placeholder="${evaluated?esc(teamRecord(evaluated,e.state)[2]):'Şablon gerekli'}"></td><td><div class="table-actions"><button class="text-button" data-preview="${e.id}">Grafikler</button><button class="text-button" data-download="${e.id}">Excel</button><button class="text-button" data-remove="${e.id}">Kaldır</button></div></td></tr>`).join('')}</tbody></table></div><p class="form-hint">Renk önerisi, özgün davranış haritasında alanı en büyük olan bölgedir; eşitlikler birlikte gösterilir. Kendi değerlendirmene göre bu alanı değiştirebilirsin.</p>`:'';
  const team=entries.filter(e=>e.role==='team');
  $('#analysis-status').textContent=`${team.length} ekip üyesi${entries.some(e=>e.role==='leader')?' · 1 yönetici profili':''} hazır.`;
@@ -25,10 +29,11 @@ function render() {
   const rows=team.map(e=>teamRecord(evaluated,e.state,e.color));
   const mean=i=>{const values=rows.map(r=>r[i]).filter(v=>v!==null);return values.length ? (values.reduce((a,b)=>a+b,0)/values.length).toLocaleString('tr-TR',{maximumFractionDigits:1}) : 'Veri yok';};
   const motivationCount=rows.filter(r=>r[16]!==null).length;
-  $('#team-overview').innerHTML=`<section class="profile-panel"><div class="panel-title"><h2>Ekip özeti</h2><span>${team.length} kişi</span></div><div class="team-metrics"><div><span>İletişim toplamı ort.</span><strong>${mean(11)} / 200</strong></div><div><span>Motivasyon toplamı ort. (${motivationCount}/${rows.length} kişi)</span><strong>${mean(16)}${motivationCount ? ' / 160' : ''}</strong></div><div><span>Kontrol odağı ort.</span><strong>${mean(17)} / 23</strong></div></div><h3>Davranış haritası</h3><p class="analysis-note">Her nokta bir ekip üyesidir. Yatay konum direkt–indirekt, dikey konum iş–insan puan farkını gösterir. İsim listesindeki numaralarla eşleştirebilirsin.</p><svg class="team-map" viewBox="0 0 600 420" role="img" aria-label="Ekip davranış haritası; değerler aşağıdaki listede"><rect x="100" y="45" width="200" height="160" fill="#eaf0f9"/><rect x="300" y="45" width="200" height="160" fill="#faeae5"/><rect x="100" y="205" width="200" height="160" fill="#eaf2e6"/><rect x="300" y="205" width="200" height="160" fill="#faf2d9"/><path d="M100 205H500 M300 45V365" stroke="#8b9d8d"/><text x="300" y="25" text-anchor="middle">İş odaklı</text><text x="300" y="400" text-anchor="middle">İnsan odaklı</text><text x="90" y="205" text-anchor="end">İndirekt</text><text x="510" y="205">Direkt</text>${rows.map((r,i)=>{const x=300+(r[3]-r[4])*190/14,y=205+(r[5]-r[6])*150/14;return `<g><title>${esc(r[0])}: Direkt ${r[3]}, İndirekt ${r[4]}, İnsan ${r[5]}, İş ${r[6]}</title><circle cx="${x}" cy="${y}" r="12" fill="#304d3f" opacity=".8"/><text x="${x}" y="${y+4}" text-anchor="middle" fill="white" font-size="11">${i+1}</text></g>`;}).join('')}</svg><ol class="map-legend">${rows.map(r=>`<li>${esc(r[0])} — ${esc(r[2])}; direkt ${r[3]}, indirekt ${r[4]}, insan ${r[5]}, iş ${r[6]}</li>`).join('')}</ol></section>`;
+  $('#team-overview').innerHTML=`<section class="profile-panel"><div class="panel-title"><h2>Ekip özeti</h2><span>${team.length} kişi</span></div><div class="team-metrics"><div><span>İletişim toplamı ort.</span><strong>${mean(11)} / 200</strong></div><div><span>Motivasyon toplamı ort. (${motivationCount}/${rows.length} kişi)</span><strong>${mean(16)}${motivationCount ? ' / 160' : ''}</strong></div><div><span>Kontrol odağı ort.</span><strong>${mean(17)} / 23</strong></div></div><h3>Davranış haritası</h3><p class="analysis-note">Her nokta bir ekip üyesidir. Yatay konum direkt–indirekt, dikey konum iş–insan puan farkını gösterir. İsim listesindeki numaralarla eşleştirebilirsin. Karakteri görmek için aşağıdaki isme tıkla.</p><svg class="team-map" viewBox="0 0 600 420" role="img" aria-label="Ekip davranış haritası; değerler aşağıdaki listede"><rect x="100" y="45" width="200" height="160" fill="#eaf0f9"/><rect x="300" y="45" width="200" height="160" fill="#faeae5"/><rect x="100" y="205" width="200" height="160" fill="#eaf2e6"/><rect x="300" y="205" width="200" height="160" fill="#faf2d9"/><path d="M100 205H500 M300 45V365" stroke="#8b9d8d"/><text x="300" y="25" text-anchor="middle">İş odaklı</text><text x="300" y="400" text-anchor="middle">İnsan odaklı</text><text x="90" y="205" text-anchor="end">İndirekt</text><text x="510" y="205">Direkt</text>${rows.map((r,i)=>{const x=300+(r[3]-r[4])*190/14,y=205+(r[5]-r[6])*150/14;return `<g><title>${esc(r[0])}: Direkt ${r[3]}, İndirekt ${r[4]}, İnsan ${r[5]}, İş ${r[6]}</title><circle cx="${x}" cy="${y}" r="12" fill="#304d3f" opacity=".8"/><text x="${x}" y="${y+4}" text-anchor="middle" fill="white" font-size="11">${i+1}</text></g>`;}).join('')}</svg><ol class="map-legend">${rows.map((r,i)=>`<li><button type="button" class="text-button" data-team-preview="${team[i].id}">${esc(r[0])} — ${esc(r[2])} · ${matchingCharacters(r.slice(3,7),r[2]).map(c=>`${c.emoji} ${c.name}`).join(' / ')}</button>; direkt ${r[3]}, indirekt ${r[4]}, insan ${r[5]}, iş ${r[6]}</li>`).join('')}</ol></section>`;
  }
  const p=entries.find(e=>e.id===previewId);
- $('#person-preview').innerHTML=p&&evaluated?`<section class="profile-panel"><h2>${esc(p.state.profile.name)}</h2>${resultsHtml(evaluated,p.state)}</section>`:'';
+ $('#person-preview').innerHTML=p&&evaluated?resultsHtml(evaluated,p.state,p.color):'';
+ disposeCharacter=mountCharacter($('#person-preview .character-panel'));
  controls();
 }
 async function run(fn) {
@@ -73,6 +78,16 @@ $('#participants').addEventListener('change',e=>{
  if(color)entry.color=e.target.value;
  render();
 });
+$('#team-overview').addEventListener('click',e=>{const button=e.target.closest('[data-team-preview]');if(!button)return;previewId=Number(button.dataset.teamPreview);render();$('#person-preview').scrollIntoView({behavior:'auto'});});
+$('#person-preview').addEventListener('click', e=>{
+ const button=e.target.closest('[data-report-focus]');if(!button)return;
+ const active=document.body.classList.toggle('report-presenting');
+ button.setAttribute('aria-pressed',String(active));button.textContent=active?'↙ Normal görünüme dön':'↗ Sunum görünümü';
+ $('#person-preview').scrollIntoView({behavior:'auto'});
+});
+window.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('report-presenting'))$('#person-preview [data-report-focus]')?.click();});
+window.addEventListener('pagehide' ,()=>disposeCharacter());
+window.addEventListener('pageshow',e=>{if(e.persisted)render();});
 $('#participants').addEventListener('click',e=>{
  const button=e.target.closest('button');if(!button)return;
  const id=Number(button.dataset.remove||button.dataset.preview||button.dataset.download),entry=entries.find(p=>p.id===id);

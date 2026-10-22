@@ -7,3 +7,9 @@ test-output/
 private-fixtures/
 node_modules
 *.inspect.ndjson
+
+# Original downloaded package; ship only the selected local modules.
+/vendor/three/
+
+# Original licensed model downloads; only selected runtime assets are shipped.
+/glbs/

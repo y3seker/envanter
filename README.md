@@ -69,3 +69,13 @@ Testler; cevap dosyasında değerlendirme bulunmamasını, 137 cevabın aktarım
 Gerçek tarayıcı ve Microsoft Excel uygulamasıyla görsel kontroller otomatik dosya doğrulamalarından ayrıdır. Yerel önizleme ortamda engellenirse bu doğrulamalar tamamlanmış sayılmaz.
 
 `tools/build-answer-template.mjs`, geliştirme ortamında `@oai/artifact-tool` ile boş cevap şablonunu yeniden üretir; site çalışırken bu bağımlılık kullanılmaz. Soruların yapısı değişirse şablon da yeniden üretilmelidir.
+
+### Analiz sayfasındaki 3D karakterler
+
+Davranış haritasındaki en büyük alanla aynı eşleştirme kullanılır: kırmızı/panter, sarı/tavus kuşu, yeşil/yunus, mavi/baykuş. Eşit renklerde karakter seçilebilir; yöneticinin renk değişikliği de dikkate alınır. Özel bir renk metni eşleşmiyorsa karakter gösterilmez. Ekip listesindeki isme veya “Grafikler” düğmesine tıklayarak kişi açılır.
+
+Kullanıcının sağladığı ZIP’lerden seçilen dört animasyonlu `.glb` modeli `assets/characters/` içinde animasyonlarıyla bulunur. Çalışma anında CDN, model servisi veya internetten ek indirme kullanılmaz. Three.js ve GLTFLoader yerel dosyalardır. WebGL 2 destekleyen tarayıcı gerekir; destek yoksa açıklayıcı metin gösterilir. Model sürüklenebilir ve ok tuşlarıyla döndürülebilir. Duraklat/Oynat kontrolü vardır; azaltılmış hareket tercihiyle duraklatılmış başlar, görünür değilken animasyon durur.
+
+Orijinal indirmeler `glbs/` içinde tutulur ve Git’e dahil edilmez. Seçilen dosyaları yeniden paketlemek için: `python3 tools/import-character-models.py`. Panter: `black-panther.zip` içindeki özgün GLB; yunus ve baykuş: kullanıcının GLB dosyaları; tavus kuşu: `merak_burung_poli_rendah.zip` (Idle animasyonu). Detaylı Indian Peacock dosyası animasyon içermediğinden ve 100 MB üstünde olduğundan seçilmedi. Kaynak ve lisans bilgileri her modelin yanında `*-license.txt` dosyasında ve karakter kartında yer alır. Boyut/merkez, modelin animasyon zarfına göre otomatik ayarlanır; aynı anda tek animasyon klibi oynatılır.
+
+Kamera mesafesi sabit değildir: animasyonun 49 örneğinden hesaplanan çevreleyen küre ve ekranın dar görüş açısı kullanılarak güvenli boşlukla ayarlanır. Bu sınır kullanıcı modeli döndürdüğünde de geçerlidir. Tavus kuşu varsayılan olarak önden gösterilir.
