@@ -348,3 +348,13 @@ body.report-presenting .participant-report { margin-top: 18px; }
  .report-footer p span { font-size: 10px; }
  body.report-presenting .analysis-main { padding: 0 8px; }
 }
+
+.share-card p { color: #596b5e; }
+.share-card .field { max-width: 520px; margin-top: 20px; }
+.share-card .button { margin-top: 12px; }
+.share-card #share-link { font-size: 14px; }
+.share-card [hidden] { display: none; }
+.shared-main #share-gate { max-width: 700px; margin: 24px auto 64px; }
+.shared-main #share-gate h1 { font-size: clamp(26px, 4vw, 38px); }
+.shared-main #share-gate form { margin-top: 24px; }
+.shared-main #share-gate .button { margin-top: 12px; }

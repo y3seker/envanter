@@ -2,8 +2,16 @@
 
 İki ayrı akış vardır:
 
-- **`index.html` — katılımcı:** dört envanteri doldurur, yalnızca kimlik bilgileri ve 137 cevabını içeren Excel’i indirir. Sonuç grafikleri, değerlendirme sayfaları ve puanlar katılımcı çıktısında bulunmaz.
+- **`index.html` — katılımcı:** dört envanteri doldurur, sonuçlarını linkle paylaşır veya yalnızca kimlik bilgileri ve 137 cevabını içeren Excel’i indirir. Excel dosyasında sonuç grafikleri, değerlendirme sayfaları ve puanlar bulunmaz.
 - **`analiz-982429.html` — yönetici:** repodaki iki boş şablonu otomatik yükler; yönetici katılımcı dosyalarını seçer. Bireysel değerlendirmeleri tek tek veya ZIP olarak, ekip analizini özgün formatında Excel olarak indirir.
+
+## Sonuçları linkle paylaşma
+
+Katılımcı son adımda **Paylaşım linkini kopyala** düğmesini kullanabilir. **Parola (isteğe bağlı)** boş bırakılırsa linki bilen herkes sonuçları açar; parola girilirse alıcı aynı parolayı girmelidir. Parola linkte veya tarayıcı kaydında tutulmaz, alıcıya ayrıca iletilir. Excel indirme seçeneği korunur.
+
+Link, `sonuc.html#r=…` biçiminde tek bir veri alanı taşır. Ad-soyad, unvan, cevaplar ve motivasyon atlama tercihi tarayıcıda kompakt kodlanıp AES-GCM ile şifrelenir. Parolalı linklerde anahtar PBKDF2-SHA-256 (600.000 tur), rastgele salt ve IV ile türetilir. Parolasız linkte rastgele anahtar da aynı pakette bulunur; bu seçenek gizli erişim veya katılımcının kimliğini doğrulama garantisi vermez. Değiştirilmiş şifreli veri reddedilir, ancak anahtarı/parolayı bilen biri yeni bir link oluşturabilir.
+
+Paylaşılan link doğrudan mevcut bireysel grafikleri ve 3D karakteri açar. Sonuçlar yalnızca bellekte işlenir; alıcının form taslağı değişmez. Atlanan motivasyon bölümünün taslaktaki cevapları paylaşılmaz. Soru sürümü/eşlemesi değişmişse eski cevaplardan yanlış sonuç üretmek yerine açık hata gösterilir. Linki iptal etme veya süre dolumu yoktur; başka parola seçmek daha önce paylaşılan linki geçersiz kılmaz. Veri sunucuya gönderilmez; link mesajlarda ve tarayıcı geçmişinde kalabilir. HTTPS veya localhost gerekir.
 
 ## Yönetici kullanımı
 
