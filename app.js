@@ -1,7 +1,7 @@
 import { PAGE_SIZE, emptyState, restoreState, validAnswer, profileIsValid, answeredCount, totalAnswered, missingQuestions, sectionSkipped, sectionComplete, requiredQuestionCount, answersComplete, MOTIVATION_SKIP_REASON } from './core.js';
 import { createAnswerWorkbook } from './answers.js';
 import { saveDraft, loadDraft, clearDraft } from './storage.js';
-import { mountSharePanel } from './share-ui.js';
+let mountSharePanel;
 
 const content = document.querySelector('#content');
 const nav = document.querySelector('#step-nav');
@@ -213,6 +213,7 @@ document.addEventListener('click', event => {
 
 async function init() {
   try {
+    ({ mountSharePanel } = await import('./share-ui.js'));
     const response = await fetch('./data/survey.json', { cache: 'no-store' });
     if (!response.ok) throw new Error('Sorular yüklenemedi.');
     survey = await response.json();

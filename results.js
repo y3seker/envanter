@@ -20,7 +20,12 @@ function bars(labels, values, max) {
 }
 
 export function resultsHtml(survey, state, colorOverride = '') {
-  const scores = resultScores(survey, state);
+  return scoreReportHtml(state.profile, resultScores(survey, state), colorOverride);
+}
+
+// Shared reports already contain evaluated scores; never reconstruct answers
+// or apply the current workbook's formulas to these saved results.
+export function scoreReportHtml(profile, scores, colorOverride = '') {
   const [direct, indirect, people, task] = scores.behavior;
   const matches = matchingCharacters(scores.behavior, colorOverride);
   const communication = leaders(['Güvenli', 'Pasif', 'Agresif', 'Pasif-agresif'], scores.communication);
@@ -32,7 +37,7 @@ export function resultsHtml(survey, state, colorOverride = '') {
   const marker = 30 + scores.control / 23 * 380;
   return `<section class="results participant-report" data-report-tone="${theme}" aria-labelledby="results-title">
     <header class="report-header"><div class="report-edition"><span class="report-live" aria-hidden="true"></span> ENVANTER / BİREYSEL PROFİL <span>01—04</span></div>
-      <div class="report-identity"><div><span class="eyebrow">HER EKİBİN KENDİNE ÖZGÜ BİR RİTMİ VAR.</span><h2 id="results-title">${escapeHtml(state.profile?.name || 'Katılımcı')}</h2><p>${escapeHtml(state.profile?.title || 'Bireysel değerlendirme')} <span>·</span> Dört boyutta bir bakış.</p></div><button type="button" class="report-focus" data-report-focus aria-pressed="false">↗ Sunum görünümü</button></div>
+      <div class="report-identity"><div><span class="eyebrow">HER EKİBİN KENDİNE ÖZGÜ BİR RİTMİ VAR.</span><h2 id="results-title">${escapeHtml(profile?.name || 'Katılımcı')}</h2><p>${escapeHtml(profile?.title || 'Bireysel değerlendirme')} <span>·</span> Dört boyutta bir bakış.</p></div><button type="button" class="report-focus" data-report-focus aria-pressed="false">↗ Sunum görünümü</button></div>
       <nav class="report-nav" aria-label="Profil bölümleri"><a href="#report-behavior"><span>01</span> Davranış</a><a href="#report-communication"><span>02</span> İletişim</a><a href="#report-motivation"><span>03</span> Motivasyon</a><a href="#report-control"><span>04</span> Kontrol odağı</a></nav>
     </header>
     <div class="results-grid">

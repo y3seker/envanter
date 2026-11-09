@@ -1,6 +1,7 @@
 import { emptyState, profileIsValid, answersComplete, sectionSkipped, validAnswer } from './core.js';
+import { resultScores } from './results.js';
 
-const FORMAT = 1;
+const FORMAT = 2;
 const ITERATIONS = 600000;
 const MAX_TOKEN_LENGTH = 4096;
 const encoder = new TextEncoder();
@@ -42,22 +43,42 @@ function answerFields(survey, state) {
   return survey.sections.filter(s => !sectionSkipped(s, state)).flatMap(section => section.questions.map(question => ({ section, question, bits: section.kind === 'choice' ? 1 : Math.ceil(Math.log2(section.max)) })));
 }
 
-async function pack(survey, state) {
+function packReport(survey, state) {
   if (!profileIsValid(state.profile)) throw new Error('Önce ad-soyad ve unvan bilgilerini tamamla.');
   if (!answersComplete(survey, state)) throw new Error('Paylaşmadan önce eksik yanıtlarını tamamla.');
-  const metadata = encoder.encode(JSON.stringify([survey.version, state.profile.name.trim(), state.profile.title.trim(), state.motivationSkipped === true]));
-  const fields = answerFields(survey, state);
-  const answers = new Uint8Array(Math.ceil(fields.reduce((n, f) => n + f.bits, 0) / 8));
-  let bit = 0;
-  for (const { section, question, bits } of fields) {
-    const answer = state.answers[section.id][question.id];
-    const value = section.kind === 'choice' ? Number(answer === 'B') : answer - 1;
-    for (let b = 0; b < bits; b++, bit++) answers[bit >> 3] |= ((value >> b) & 1) << (bit % 8);
-  }
-  return join(await surveyId(survey), new Uint8Array([metadata.length >> 8, metadata.length & 255]), metadata, answers);
+  const scores = resultScores(survey, state);
+  assertReportScores(scores);
+  const metadata = encoder.encode(JSON.stringify([state.profile.name.trim(), state.profile.title.trim()]));
+  const values = [...scores.communication, ...scores.behavior, ...(scores.motivation || []), scores.control];
+  return join(new Uint8Array([scores.motivation === null ? 1 : 0, metadata.length >> 8, metadata.length & 255]), metadata, new Uint8Array(values));
+}
+
+function assertReportScores(scores) {
+  const four = (values, min, max) => Array.isArray(values) && values.length === 4 && values.every(n => Number.isInteger(n) && n >= min && n <= max);
+  if (!four(scores.communication, 10, 50) || !four(scores.behavior, 0, 14) ||
+      scores.behavior[0] + scores.behavior[1] !== 14 || scores.behavior[2] + scores.behavior[3] !== 14 ||
+      (scores.motivation !== null && !four(scores.motivation, 10, 40)) ||
+      !Number.isInteger(scores.control) || scores.control < 0 || scores.control > 23) throw invalidLink();
+}
+
+function unpackReport(bytes) {
+  if (bytes.length < 3 || ![0, 1].includes(bytes[0])) throw invalidLink();
+  const motivationSkipped = bytes[0] === 1;
+  const length = (bytes[1] << 8) | bytes[2];
+  if (bytes.length !== 3 + length + (motivationSkipped ? 9 : 13)) throw invalidLink();
+  let metadata;
+  try { metadata = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes.slice(3, 3 + length))); } catch { throw invalidLink(); }
+  if (!Array.isArray(metadata) || metadata.length !== 2) throw invalidLink();
+  const profile = { name: metadata[0], title: metadata[1] };
+  if (!profileIsValid(profile)) throw invalidLink();
+  const values = Array.from(bytes.slice(3 + length));
+  const scores = { communication: values.slice(0, 4), behavior: values.slice(4, 8), motivation: motivationSkipped ? null : values.slice(8, 12), control: values.at(-1) };
+  assertReportScores(scores);
+  return { profile, scores, motivationSkipped };
 }
 
 async function unpack(survey, bytes) {
+  if (!survey) throw new Error('Eski paylaşım linkini açmak için sorular yüklenemedi. Tekrar dene.');
   const expected = await surveyId(survey);
   if (!expected.every((v, i) => v === bytes[i])) throw new Error('Bu link farklı bir soru sürümüyle oluşturulmuş. Sonuçlar güncel sorularla açılamıyor.');
   const length = (bytes[16] << 8) | bytes[17];
@@ -93,15 +114,16 @@ async function passwordKey(password, salt) {
 
 function parseToken(token) {
   const bytes = fromBase64(token);
-  if (bytes[0] !== FORMAT || ![0, 1].includes(bytes[1])) throw invalidLink();
+  if (![1, FORMAT].includes(bytes[0]) || ![0, 1].includes(bytes[1])) throw invalidLink();
   const passwordProtected = bytes[1] === 1;
   const keyEnd = passwordProtected ? 18 : 34;
-  if (bytes.length < keyEnd + 12 + 16 + 18) throw invalidLink();
-  return { passwordProtected, header: bytes.slice(0, 2), keyBytes: bytes.slice(2, keyEnd), iv: bytes.slice(keyEnd, keyEnd + 12), ciphertext: bytes.slice(keyEnd + 12) };
+  if (bytes.length < keyEnd + 12 + 16 + (bytes[0] === 1 ? 18 : 12)) throw invalidLink();
+  return { format: bytes[0], passwordProtected, header: bytes.slice(0, 2), keyBytes: bytes.slice(2, keyEnd), iv: bytes.slice(keyEnd, keyEnd + 12), ciphertext: bytes.slice(keyEnd + 12) };
 }
 
 export function inspectShareToken(token) {
-  return { passwordProtected: parseToken(token).passwordProtected };
+  const { passwordProtected, format } = parseToken(token);
+  return { passwordProtected, format };
 }
 
 export function tokenFromHash(hash) {
@@ -115,7 +137,7 @@ export function tokenFromHash(hash) {
 export async function createShareToken(survey, state, password = '') {
   if (typeof password !== 'string' || password.length > 128) throw new Error('Parola en fazla 128 karakter olabilir.');
   const api = cryptoApi();
-  const payload = await pack(survey, state);
+  const payload = packReport(survey, state);
   const header = new Uint8Array([FORMAT, password ? 1 : 0]);
   const keyBytes = api.getRandomValues(new Uint8Array(password ? 16 : 32));
   const iv = api.getRandomValues(new Uint8Array(12));
@@ -136,7 +158,7 @@ export async function openShareToken(survey, token, password = '') {
   } catch {
     throw new Error(packet.passwordProtected ? 'Parola yanlış veya paylaşım linki bozulmuş. Kontrol edip tekrar dene.' : 'Paylaşım linki bozulmuş. Paylaşan kişiden linki yeniden iste.');
   }
-  return unpack(survey, payload);
+  return packet.format === 1 ? unpack(survey, payload) : unpackReport(payload);
 }
 
 export async function createShareUrl(survey, state, { password = '', baseUrl = globalThis.location?.href } = {}) {

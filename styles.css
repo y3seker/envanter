@@ -352,6 +352,7 @@ body.report-presenting .participant-report { margin-top: 18px; }
 .share-card p { color: #596b5e; }
 .share-card .field { max-width: 520px; margin-top: 20px; }
 .share-card .button { margin-top: 12px; }
+.share-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 .share-card #share-link { font-size: 14px; }
 .share-card [hidden] { display: none; }
 .shared-main #share-gate { max-width: 700px; margin: 24px auto 64px; }

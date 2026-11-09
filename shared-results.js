@@ -1,6 +1,6 @@
 import { inspectShareToken, tokenFromHash, openShareToken } from './share.js';
 import { evaluationSurvey } from './analysis-core.js';
-import { resultsHtml } from './results.js';
+import { resultsHtml, scoreReportHtml } from './results.js';
 import { mountCharacter } from './character-viewer.js';
 
 const gate = document.querySelector('#share-gate');
@@ -25,12 +25,14 @@ function failure(error) {
 }
 
 async function showResults(password = '', attempt = ++request) {
-  const state = await openShareToken(survey, token, password);
-  const evaluated = await evaluatedSurvey();
+  const currentToken = token;
+  const format = inspectShareToken(currentToken).format;
+  const report = await openShareToken(survey, currentToken, password);
+  const html = format === 1 ? resultsHtml(await evaluatedSurvey(), report) : scoreReportHtml(report.profile, report.scores);
   if (attempt !== request) return;
-  preview.innerHTML = resultsHtml(evaluated, state);
+  preview.innerHTML = html;
   gate.replaceChildren(); gate.hidden = true;
-  document.title = `${state.profile.name} · Envanter sonuçları`;
+  document.title = `${report.profile.name} · Envanter sonuçları`;
   disposeCharacter(); disposeCharacter = mountCharacter(preview.querySelector('.character-panel'));
 }
 
@@ -63,11 +65,14 @@ async function init() {
   gate.innerHTML = '<h1>Sonuçlar hazırlanıyor…</h1><p role="status">Paylaşım linki kontrol ediliyor.</p>';
   try {
     token = tokenFromHash(location.hash);
-    const response = await fetch('./data/survey.json', { cache: 'no-store' });
-    if (!response.ok) throw new Error('Sorular yüklenemedi. Bağlantını kontrol edip tekrar dene.');
-    survey = await response.json();
+    const info = inspectShareToken(token);
+    if (info.format === 1) {
+      const response = await fetch('./data/survey.json', { cache: 'no-store' });
+      if (!response.ok) throw new Error('Sorular yüklenemedi. Bağlantını kontrol edip tekrar dene.');
+      survey = await response.json();
+    }
     if (attempt !== request) return;
-    if (inspectShareToken(token).passwordProtected) passwordForm();
+    if (info.passwordProtected) passwordForm();
     else await showResults('', attempt);
   } catch (error) { if (attempt === request) failure(error); }
 }
